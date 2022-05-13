@@ -1,4 +1,7 @@
+@value --color-gray-6 from './common/colors.css';
+
 body {
   box-sizing: border-box;
   margin: 0;
+  background-color: --color-gray-6;
 }
