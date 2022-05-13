@@ -1,0 +1,14 @@
+@value from '../../common/colors.css';
+@value --base-space from '../../common/size.css';
+
+.rootContainer {
+  display: flex;
+}
+.left {
+  width: 19%;
+  background-color: red;
+}
+.right {
+  width: 81%;
+  background-color: blue;
+}
