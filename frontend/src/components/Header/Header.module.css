@@ -1,11 +1,13 @@
-@value --color-black, --color-white, --color-blue-4 from '../../common/colors.css';
+@value --color-black, --color-white, --color-blue-4,--color-gray-6 from '../../common/colors.css';
 @value --base-space from '../../common/size.css';
 
 .header {
   display: flex;
-
   padding-right: 0;
   background-color: --color-black;
+}
+.clickedLink {
+  background-color: --color-gray-6;
 }
 .headerBtn {
   font-size: 1rem;
