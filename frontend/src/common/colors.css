@@ -1,0 +1,15 @@
+@value --color-white: #fff;
+@value --color-gray-1: #a1a6b6;
+@value --color-gray-2: #6b7185;
+@value --color-gray-3: #3a3f50;
+@value --color-gray-4: #282b39;
+@value --color-gray-5: #242735;
+@value --color-gray-6: #11131b;
+@value --color-black: #000;
+@value --color-blue-1: #99c1f8;
+@value --color-blue-2: #6ea7f5;
+@value --color-blue-3: #3082f2;
+@value --color-blue-4: #046cfc;
+@value --color-blue-5: #004eba;
+@value --color-blue-6: #1c2f50;
+@value --shadow-4: 0px 3px 8px 0px rgba(17, 19, 27, 0.3);
