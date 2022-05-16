@@ -29,12 +29,12 @@ const Header: FC = ({ children }) => {
             Marketplace
           </button>
         </Link>
-        <Link to="/Breeding" className={clicked[1] ? styles.clickedLink : ''}>
+        <Link to="/MyNFTPage" className={clicked[1] ? styles.clickedLink : ''}>
           <button
-            className={`${styles.headerBtn} ${styles.MarketplaceBtn}`}
+            className={`${styles.headerBtn} ${styles.MyNFTPageBtn}`}
             onClick={() => changeButtonColor(1)}
           >
-            Breeding
+            나의 NFT
           </button>
         </Link>
         <Link to="/Game" className={clicked[2] ? styles.clickedLink : ''}>

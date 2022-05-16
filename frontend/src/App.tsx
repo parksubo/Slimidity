@@ -4,6 +4,7 @@ import Header from './components/Header/Header';
 import Game from './routes/Game/Game';
 import Main from './routes/Main/Main';
 import Marketplace from './routes/Marketplace/Marketplace';
+import MyNFTPage from './routes/MyNFTPage/MyNFTPage';
 const App: FC = () => {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ const App: FC = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/Marketplace" element={<Marketplace />} />
+          <Route path="/MyNFTPage" element={<MyNFTPage />} />
           <Route path="/Game" element={<Game />} />
         </Routes>
       </Header>
