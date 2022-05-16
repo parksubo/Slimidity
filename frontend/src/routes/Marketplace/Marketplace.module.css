@@ -1,14 +1,66 @@
-@value from '../../common/colors.css';
+@value --color-white, --color-black, --color-gray-3, --color-gray-4, --color-gray-5 from '../../common/colors.css';
 @value --base-space from '../../common/size.css';
 
 .rootContainer {
   display: flex;
 }
 .left {
+  display: flex;
+  flex-direction: column;
   width: 19%;
-  background-color: red;
+  /* background-color: red; */
+}
+.filterContent {
+  border-bottom: 1px solid --color-gray-4;
+  padding: 1rem;
+  color: --color-white;
+}
+.filterHeader {
+  font-size: 2rem;
 }
 .right {
   width: 81%;
-  background-color: blue;
+  color: --color-white;
+  /* background-color: blue; */
+  padding: 1.5em;
+  border-left: 1px solid --color-gray-4;
+}
+.listHeader {
+  display: flex;
+}
+.slimeCount {
+  font-size: 1.8rem;
+}
+.filterBtn {
+  margin-left: auto;
+  margin-right: calc(--base-space * 10);
+}
+.cardList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card {
+  transition: 300ms;
+  margin: 0.5rem;
+}
+.PaginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: calc(--base-space * 2);
+}
+.PaginationText {
+  margin: 0 --base-space;
+}
+.PaginationBtn {
+  width: 3rem;
+  background-color: --color-gray-5;
+  border: 1px solid --color-gray-4;
+  border-radius: 0.3rem;
+  transition: 300ms;
+  margin: 0 calc(--base-space * 3);
+}
+.PaginationBtn:hover {
+  background-color: --color-gray-3;
 }

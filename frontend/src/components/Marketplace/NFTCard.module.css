@@ -1,0 +1,16 @@
+@value --color-white, --color-gray-4, --color-gray-5 from '../../common/colors.css';
+@value --base-space from '../../common/size.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14rem;
+  background-color: --color-gray-5;
+  border: 1px solid --color-gray-4;
+  border-radius: 0.3rem;
+  padding: calc(--base-space * 2);
+}
+.img {
+  width: 50%;
+}
