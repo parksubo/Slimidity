@@ -1,18 +1,70 @@
-@value --color-white, --color-black, --color-gray-3, --color-gray-4, --color-gray-5 from '../../common/colors.css';
+@value --color-white, --color-black, --color-gray-3, --color-gray-4, --color-gray-5,--shadow-4 from '../../common/colors.css';
 @value --base-space from '../../common/size.css';
 
 .container {
   display: flex;
 }
-.list {
+.left {
   display: flex;
   flex-direction: column;
-  background-color: red;
   width: 50%;
   border-right: 1px solid --color-gray-3;
 }
-.targets {
+.leftHeader {
   display: flex;
-  background-color: blue;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: calc(--base-space * 2);
+  color: --color-white;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  margin: --base-space;
+  width: 10rem;
+  cursor: pointer;
+  transition: 300ms;
+}
+.card:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: --shadow-4;
+}
+.right {
+  display: flex;
+  flex-direction: column;
   width: 50%;
+}
+.rightHeader {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: calc(--base-space * 2);
+  color: --color-white;
+}
+.breedingPlace {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid --color-gray-3;
+  padding: calc(--base-space * 5);
+}
+.heartImg {
+  width: 5rem;
+  height: 5rem;
+}
+.clickedCard {
+  width: 15rem;
+  margin: --base-space;
+  cursor: pointer;
+  transition: 300ms;
+}
+.clickedCard:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: --shadow-4;
+}
+.breedingBtn {
+  padding: calc(--base-space * 2);
+  margin: 0 auto;
 }
