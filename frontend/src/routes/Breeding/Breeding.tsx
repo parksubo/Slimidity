@@ -15,14 +15,15 @@ type NFT = {
   id: string;
   type: string;
   attack: number;
+  price: number;
 };
 
 const Breeding: FC = () => {
   const [nfts, setNfts] = useState<Array<NFT>>([
-    { id: '1', type: 'ice', attack: 1 },
-    { id: '2', type: 'fire', attack: 2 },
-    { id: '3', type: 'wind', attack: 4 },
-    { id: '4', type: 'ice', attack: 3 },
+    { id: '1', type: 'ice', attack: 1, price: 0.1 },
+    { id: '2', type: 'fire', attack: 2, price: 0.3 },
+    { id: '3', type: 'wind', attack: 4, price: 0.9 },
+    { id: '4', type: 'ice', attack: 3, price: 1.4 },
   ]); // 추후 contract에서 nft받아오기
   const [clicked, setClicked] = useState<Array<NFT>>([]); // 선택한 카드
 
