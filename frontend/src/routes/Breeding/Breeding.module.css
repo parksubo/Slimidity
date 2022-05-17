@@ -19,6 +19,7 @@
 }
 .cards {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 }
 .card {
@@ -45,17 +46,19 @@
 }
 .breedingPlace {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   border: 1px solid --color-gray-3;
-  padding: calc(--base-space * 5);
+  margin: calc(--base-space * 4);
+  margin-top: 0;
+  height: 20rem;
 }
 .heartImg {
   width: 5rem;
   height: 5rem;
 }
 .clickedCard {
-  width: 15rem;
+  width: 13rem;
   margin: --base-space;
   cursor: pointer;
   transition: 300ms;
@@ -65,6 +68,5 @@
   box-shadow: --shadow-4;
 }
 .breedingBtn {
-  padding: calc(--base-space * 2);
   margin: 0 auto;
 }
