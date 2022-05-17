@@ -31,7 +31,9 @@ const Breeding: FC = () => {
     const nft: NFT = nfts.find((nft) => nft.id === id)!;
 
     let newClicked: Array<NFT> = [...clicked];
-    if (newClicked.length < 2) {
+    if (newClicked.length == 0) {
+      newClicked.push(nft);
+    } else if (newClicked.length == 1 && newClicked[0].id !== id) {
       newClicked.push(nft);
     }
     setClicked(newClicked);
