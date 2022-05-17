@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 
 const Header: FC = ({ children }) => {
-  const [clicked, setClicked] = useState([false, false, false]);
+  const [clicked, setClicked] = useState([false, false, false, false]);
 
   const changeButtonColor = (num: number) => {
-    let newClicked = [false, false, false];
+    let newClicked = [false, false, false, false];
     newClicked[num] = true;
     setClicked(newClicked);
   };
@@ -37,10 +37,18 @@ const Header: FC = ({ children }) => {
             나의 NFT
           </button>
         </Link>
-        <Link to="/Game" className={clicked[2] ? styles.clickedLink : ''}>
+        <Link to="/Breeding" className={clicked[2] ? styles.clickedLink : ''}>
+          <button
+            className={`${styles.headerBtn} ${styles.MyNFTPageBtn}`}
+            onClick={() => changeButtonColor(2)}
+          >
+            Breeding
+          </button>
+        </Link>
+        <Link to="/Game" className={clicked[3] ? styles.clickedLink : ''}>
           <button
             className={`${styles.headerBtn} ${styles.MarketplaceBtn}`}
-            onClick={() => changeButtonColor(2)}
+            onClick={() => changeButtonColor(3)}
           >
             Game
           </button>
