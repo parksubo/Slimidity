@@ -71,7 +71,12 @@ const Breeding: FC = () => {
               data-id={nft.id}
               onClick={onClickCard}
             >
-              <NFTCard />
+              <NFTCard
+                id={nft.id}
+                type={nft.type}
+                attack={nft.attack}
+                price={nft.price}
+              />
             </div>
           ))}
         </div>
@@ -89,7 +94,12 @@ const Breeding: FC = () => {
               onClick={onClickBreedingCard}
               data-id={clicked[0].id}
             >
-              <NFTCard />
+              <NFTCard
+                id={clicked[0].id}
+                type={clicked[0].type}
+                attack={clicked[0].attack}
+                price={clicked[0].price}
+              />
             </div>
           )}
           <img
@@ -104,7 +114,12 @@ const Breeding: FC = () => {
               onClick={onClickBreedingCard}
               data-id={clicked[1].id}
             >
-              <NFTCard />
+              <NFTCard
+                id={clicked[1].id}
+                type={clicked[1].type}
+                attack={clicked[1].attack}
+                price={clicked[1].price}
+              />
             </div>
           )}
         </div>

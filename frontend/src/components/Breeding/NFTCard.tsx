@@ -1,9 +1,17 @@
 import React, { FC } from 'react';
 import styles from './NFTCard.module.css';
-const NFTCard: FC = (props) => {
+
+interface INFTCardProps {
+  id: string;
+  type: string;
+  attack: number;
+  price: number;
+}
+
+const NFTCard: FC<INFTCardProps> = ({ id, type, attack, price }) => {
   return (
     <div className={styles.container}>
-      <span>id: NFT 아이디</span>
+      <span>id: {id}</span>
       <div className={styles.nftImage}>
         <img
           src={require('../../images/IceSlime.png')}
@@ -11,9 +19,9 @@ const NFTCard: FC = (props) => {
         />
       </div>
       <div className={styles.metadata}>
-        <span>가격</span>
-        <span>타입</span>
-        <span>공격력</span>
+        <span>가격: {price}</span>
+        <span>타입: {type}</span>
+        <span>공격력: {attack}</span>
       </div>
     </div>
   );
