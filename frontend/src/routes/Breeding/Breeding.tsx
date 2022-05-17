@@ -39,6 +39,12 @@ const Breeding: FC = () => {
     setClicked(newClicked);
   };
 
+  const isCardClicked = (nft: NFT): boolean => {
+    for (let i = 0; i < clicked.length; i++) {
+      if (clicked[i].id === nft.id) return true;
+    }
+    return false;
+  };
   const onClickBreedingCard = (e: React.MouseEvent<HTMLInputElement>) => {
     const id: string = e.currentTarget.getAttribute('data-id')!;
     let newClicked: Array<NFT> = clicked.filter((nft) => nft.id !== id);
@@ -53,10 +59,14 @@ const Breeding: FC = () => {
           <span>카드 두개를 선택해서 브리딩을 수행해보세요</span>
         </div>
         <div className={styles.cards}>
-          {nfts.map((nft, idx) => (
+          {nfts.map((nft) => (
             <div
-              className={styles.card}
-              key={idx}
+              className={
+                isCardClicked(nft)
+                  ? `${styles.card} ${styles.clicked}`
+                  : `${styles.card}`
+              }
+              key={nft.id}
               data-id={nft.id}
               onClick={onClickCard}
             >

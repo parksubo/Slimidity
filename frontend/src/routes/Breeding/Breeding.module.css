@@ -32,6 +32,9 @@
   transform: translateY(-0.5rem);
   box-shadow: --shadow-4;
 }
+.clicked {
+  border: 1px solid blueviolet;
+}
 .right {
   display: flex;
   flex-direction: column;
