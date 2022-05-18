@@ -1,14 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import DropDownSearch from '../../components/Marketplace/DropDownSearch';
 import NFTCard from '../../components/Marketplace/NFTCard';
 import { ReactComponent as RightArrowImg } from '../../icons/arrow-right-solid.svg';
 import { ReactComponent as LeftArrowImg } from '../../icons/arrow-left-solid.svg';
 import styles from './Marketplace.module.css';
 
+// Type Aliases
+type NFT = {
+  id: string;
+  type: string;
+  attack: number;
+  price: number;
+};
+
 export interface IMarketpalceProps {}
 
 const Marketplace: FC<IMarketpalceProps> = (props) => {
-  const nfts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // 추후 contract에서 nft받아오기
+  const [nfts, setNfts] = useState<Array<NFT>>([
+    { id: '1', type: 'ice', attack: 1, price: 0.1 },
+    { id: '2', type: 'fire', attack: 2, price: 0.3 },
+    { id: '3', type: 'wind', attack: 4, price: 0.9 },
+    { id: '4', type: 'ice', attack: 3, price: 1.4 },
+  ]); // 추후 contract에서 nft받아오기
+
   return (
     <div className={styles.rootContainer}>
       <div className={styles.left}>
@@ -31,8 +45,13 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
         </div>
         <div className={styles.cardList}>
           {nfts.map((nft) => (
-            <div className={styles.card}>
-              <NFTCard />
+            <div className={styles.card} key={nft.id} data-id={nft.id}>
+              <NFTCard
+                id={nft.id}
+                type={nft.type}
+                attack={nft.attack}
+                price={nft.price}
+              />
             </div>
           ))}
         </div>

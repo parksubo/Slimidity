@@ -14,3 +14,7 @@
 .img {
   width: 50%;
 }
+.metadata {
+  display: flex;
+  flex-direction: column;
+}
