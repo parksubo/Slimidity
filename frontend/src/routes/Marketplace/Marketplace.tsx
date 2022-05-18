@@ -3,6 +3,7 @@ import DropDownSearch from '../../components/Marketplace/DropDownSearch';
 import NFTCard from '../../components/Marketplace/NFTCard';
 import { ReactComponent as RightArrowImg } from '../../icons/arrow-right-solid.svg';
 import { ReactComponent as LeftArrowImg } from '../../icons/arrow-left-solid.svg';
+import { ReactComponent as CaretUp } from '../../icons/caret-up-solid.svg';
 import styles from './Marketplace.module.css';
 
 // Type Aliases
@@ -13,6 +14,10 @@ type NFT = {
   price: number;
 };
 
+type Filters = {
+  type: boolean;
+  attack: boolean;
+};
 export interface IMarketpalceProps {}
 
 const Marketplace: FC<IMarketpalceProps> = (props) => {
@@ -22,6 +27,11 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     { id: '3', type: 'wind', attack: 4, price: 3 },
     { id: '4', type: 'ice', attack: 10, price: 20 },
   ]); // 추후 contract에서 nft받아오기
+
+  const [isTriggerOpen, setIsTriggerOpen] = useState<Filters>({
+    type: true,
+    attack: true,
+  });
 
   // 정렬
   // 0: highest price 1: lowest price 2: Latest
@@ -44,6 +54,37 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     }
     setNfts(sortedNfts);
   };
+
+  const onClickCollapseTrigger = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
+    const name: string | null = e.currentTarget.getAttribute('data-name');
+
+    if (name != null) {
+      setIsTriggerOpen((prevIsTriggerOpen) => ({
+        ...prevIsTriggerOpen,
+        [name]: !prevIsTriggerOpen[name as keyof Filters],
+      }));
+    } else {
+      throw new Error('triggerOpen Error');
+    }
+  };
+
+  const onClickTypeFilterBtn = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void => {
+    const type: string | null = e.currentTarget.getAttribute('data-name');
+    if (name != null) {
+      setNfts((prevNfts) => {
+        let sortedNfts: Array<NFT> = prevNfts.filter(
+          (nft) => nft.type === type
+        );
+        return sortedNfts;
+      });
+    } else {
+      throw new Error('triggerOpen Error');
+    }
+  };
   return (
     <div className={styles.rootContainer}>
       <div className={styles.left}>
@@ -51,7 +92,34 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
           Filter
         </div>
         <div className={`${styles.filterContent} ${styles.filterType}`}>
-          Type
+          <div className={styles.CollapseTriggerContainer}>
+            <button
+              className={
+                isTriggerOpen.type
+                  ? styles.CollapseBtn
+                  : styles.ClickedCollapseBtn
+              }
+              onClick={onClickCollapseTrigger}
+              data-name="type"
+            >
+              <CaretUp width="0.8rem" height="2rem" fill="gray" />
+            </button>
+            <span>Type</span>
+          </div>
+          {isTriggerOpen['type'] ? (
+            <div className={styles.CollapseContentContainer}>
+              <div className={styles.typeFilter}>
+                <button onClick={onClickTypeFilterBtn} data-name="ice">
+                  Ice
+                </button>
+                <button onClick={onClickTypeFilterBtn} data-name="fire">
+                  Fire
+                </button>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         <div className={`${styles.filterContent} ${styles.filterPower}`}>
           Power

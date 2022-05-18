@@ -18,6 +18,19 @@
 .filterHeader {
   font-size: 2rem;
 }
+.CollapseBtn {
+  background-color: transparent;
+  border: 0;
+  margin-right: --base-space;
+  transition: 300ms;
+}
+.ClickedCollapseBtn {
+  background-color: transparent;
+  border: 0;
+  margin-right: --base-space;
+  transition: 300ms;
+  transform: rotate(-180deg);
+}
 .right {
   width: 81%;
   color: --color-white;
