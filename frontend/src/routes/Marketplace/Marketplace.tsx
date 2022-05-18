@@ -17,12 +17,33 @@ export interface IMarketpalceProps {}
 
 const Marketplace: FC<IMarketpalceProps> = (props) => {
   const [nfts, setNfts] = useState<Array<NFT>>([
-    { id: '1', type: 'ice', attack: 1, price: 0.1 },
-    { id: '2', type: 'fire', attack: 2, price: 0.3 },
-    { id: '3', type: 'wind', attack: 4, price: 0.9 },
-    { id: '4', type: 'ice', attack: 3, price: 1.4 },
+    { id: '1', type: 'ice', attack: 1, price: 4 },
+    { id: '2', type: 'fire', attack: 2, price: 1 },
+    { id: '3', type: 'wind', attack: 4, price: 3 },
+    { id: '4', type: 'ice', attack: 10, price: 20 },
   ]); // 추후 contract에서 nft받아오기
 
+  // 정렬
+  // 0: highest price 1: lowest price 2: Latest
+  // !!추후수정!! latest는 id가 아닌 실제 mint 시간을 이용해서 정렬해야함.
+  const onClickSort = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    const command: string | null = e.currentTarget.getAttribute('data-command');
+    let sortedNfts: Array<NFT> = [...nfts];
+    switch (command) {
+      case '0':
+        sortedNfts.sort((a, b) => b.price - a.price);
+        break;
+      case '1':
+        sortedNfts.sort((a, b) => a.price - b.price);
+        break;
+      case '2':
+        sortedNfts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+        break;
+      default:
+        break;
+    }
+    setNfts(sortedNfts);
+  };
   return (
     <div className={styles.rootContainer}>
       <div className={styles.left}>
@@ -40,7 +61,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
         <div className={styles.listHeader}>
           <span className={styles.slimeCount}>123,423 Slimes</span>
           <div className={styles.filterBtn}>
-            <DropDownSearch />
+            <DropDownSearch onClickSort={onClickSort} />
           </div>
         </div>
         <div className={styles.cardList}>

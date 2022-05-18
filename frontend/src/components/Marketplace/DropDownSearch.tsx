@@ -1,6 +1,12 @@
 import React, { FC } from 'react';
 
-const DropDownSearch: FC = (props) => {
+interface IDropDownSearchProps {
+  onClickSort: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
+
+// 정렬
+// 0: highest price 1: lowest price 2: Latest
+const DropDownSearch: FC<IDropDownSearchProps> = ({ onClickSort }) => {
   return (
     <>
       <button
@@ -18,17 +24,32 @@ const DropDownSearch: FC = (props) => {
         aria-labelledby="dropdownMenuButton2"
       >
         <li>
-          <a className="dropdown-item" href="#">
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={onClickSort}
+            data-command={0}
+          >
             Highest Price
           </a>
         </li>
         <li>
-          <a className="dropdown-item" href="#">
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={onClickSort}
+            data-command={1}
+          >
             Lowest Price
           </a>
         </li>
         <li>
-          <a className="dropdown-item" href="#">
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={onClickSort}
+            data-command={2}
+          >
             Latest
           </a>
         </li>
