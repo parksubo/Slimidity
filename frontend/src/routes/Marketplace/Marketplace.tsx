@@ -127,7 +127,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
       </div>
       <div className={styles.right}>
         <div className={styles.listHeader}>
-          <span className={styles.slimeCount}>123,423 Slimes</span>
+          <span className={styles.slimeCount}>{nfts.length} Slimes</span>
           <div className={styles.filterBtn}>
             <DropDownSearch onClickSort={onClickSort} />
           </div>
