@@ -1,0 +1,79 @@
+@value --color-white, --color-gray-4, --color-gray-5 from '../../common/colors.css';
+@value --base-space from '../../common/size.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 12rem;
+  background-color: --color-gray-5;
+  border: 1px solid --color-gray-4;
+  border-radius: 0.3rem;
+  padding: calc(--base-space);
+  color: --color-white;
+}
+.img {
+  width: 50%;
+}
+.metadata {
+  display: flex;
+  flex-direction: column;
+}
+
+.sellContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: --base-space;
+  margin-bottom: --base-space;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  height: 1.7rem;
+  width: 9rem;
+}
+.inputContainer > input {
+  width: 50%;
+  margin-right: 5%;
+  border: none;
+}
+input:focus {
+  outline: none;
+}
+.inputContainer > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  text-align: center;
+}
+
+.sellButton {
+  background-color: rgb(0, 149, 0);
+  padding: --base-space;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  width: 80%;
+}
+
+.cancelButton {
+  background-color: rgb(149, 0, 0);
+  padding: --base-space;
+  margin-top: --base-space;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  width: 80%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

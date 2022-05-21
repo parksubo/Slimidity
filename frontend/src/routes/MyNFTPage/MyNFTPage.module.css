@@ -1,0 +1,20 @@
+@value --color-white, --color-gray-4, --color-gray-5 from '../../common/colors.css';
+@value --base-space from '../../common/size.css';
+
+.container {
+  padding: calc(--base-space * 2);
+}
+.header {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: --base-space;
+  color: --color-white;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  margin: --base-space;
+}
