@@ -31,6 +31,10 @@
   transition: 300ms;
   transform: rotate(-180deg);
 }
+.attackFilter {
+  margin: 0 auto;
+  width: 90%;
+}
 .right {
   width: 81%;
   color: --color-white;

@@ -1,0 +1,21 @@
+@value --color-white, --color-gray-3, --color-blue-4 from '../../../common/colors.css';
+@value --base-space from '../../../common/size.css';
+
+.InputbtnContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.InputBtn {
+  color: --color-white;
+  background-color: transparent;
+  border: 1px solid --color-gray-3;
+  width: 45%;
+  padding: --base-space;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+.InputBtn:focus {
+  border-color: --color-blue-4;
+}
