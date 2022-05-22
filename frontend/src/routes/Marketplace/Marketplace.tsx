@@ -86,11 +86,10 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     e: React.MouseEvent<HTMLButtonElement>
   ): void => {
     const type: string | null = e.currentTarget.getAttribute('data-name');
+
     if (name != null) {
-      setNfts((prevNfts) => {
-        let sortedNfts: NFT[] = prevNfts.filter((nft) => nft.type === type);
-        return sortedNfts;
-      });
+      let sortedNfts: NFT[] = NFTsOnChain.filter((nft) => nft.type === type);
+      setNfts(sortedNfts);
     } else {
       throw new Error('triggerOpen Error');
     }
@@ -197,6 +196,9 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
                 </button>
                 <button onClick={onClickTypeFilterBtn} data-name="fire">
                   Fire
+                </button>
+                <button onClick={onClickTypeFilterBtn} data-name="wind">
+                  Wind
                 </button>
               </div>
             </div>
