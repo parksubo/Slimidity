@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import NFTCard from '../../components/Breeding/NFTCard';
 import styles from './Breeding.module.css';
+import { NFT } from '../../common/DataTypes';
 
 function isEmptyObj(obj: Object): boolean {
   if (obj === undefined) return true;
@@ -9,14 +10,6 @@ function isEmptyObj(obj: Object): boolean {
   }
   return false;
 }
-
-// Type Aliases
-type NFT = {
-  id: string;
-  type: string;
-  attack: number;
-  price: number;
-};
 
 const Breeding: FC = () => {
   const [nfts, setNfts] = useState<Array<NFT>>([

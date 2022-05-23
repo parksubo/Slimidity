@@ -1,14 +1,8 @@
 import React, { FC } from 'react';
 import styles from './NFTCard.module.css';
+import { NFTCardProps } from '../../common/DataTypes';
 
-interface INFTCardProps {
-  id: string;
-  type: string;
-  attack: number;
-  price: number;
-}
-
-const NFTCard: FC<INFTCardProps> = ({ id, type, attack, price }) => {
+const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
   return (
     <div className={styles.container}>
       <span>id: {id}</span>

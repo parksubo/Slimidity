@@ -1,14 +1,7 @@
 import React, { FC, useState } from 'react';
 import NFTCard from '../../components/MyNFTPage/NFTCard';
 import styles from './MyNFTPage.module.css';
-
-// Type Aliases
-type NFT = {
-  id: string;
-  type: string;
-  attack: number;
-  price: number;
-};
+import { NFT } from '../../common/DataTypes';
 
 const MyNFTPage: FC = () => {
   const [nfts, setNfts] = useState<Array<NFT>>([

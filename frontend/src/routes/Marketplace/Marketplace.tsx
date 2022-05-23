@@ -6,14 +6,7 @@ import { ReactComponent as LeftArrowImg } from '../../icons/arrow-left-solid.svg
 import { ReactComponent as CaretUp } from '../../icons/caret-up-solid.svg';
 import styles from './Marketplace.module.css';
 import RangeSlider from '../../components/Marketplace/Filter/RangeSlider';
-
-// Type Aliases
-type NFT = {
-  id: string;
-  type: string;
-  attack: number;
-  price: number;
-};
+import { NFT } from '../../common/DataTypes'; // NFT type
 
 type Filters = {
   type: boolean;
