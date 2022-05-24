@@ -114,8 +114,8 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
     }
 
     // 임시 슬라임 민팅 함수
-    function mintGenesisSlime(string memory _genes) external {// external onlyDeployer {
-        createSlime(_genes, 0, 0, "green", 100, 10, msg.sender);
+    function mintGenesisSlime(string memory _genes, string memory _type) external {// external onlyDeployer {
+        createSlime(_genes, 0, 0, _type, 100, 10, msg.sender);
     }
     /*
     // 배포자만 사용가능하게

@@ -53,27 +53,26 @@ contract SlimeCore is SlimeBase {
     // 판매중인 token을 저장: FrontEnd에서 사용
     uint256[] public onSaleSlimeTokenArray;
 
-    function setForSaleSlimeToken(uint256 tokenId) public {
-        // 판매 등록되어 있는 가격 불러오기 
-        uint256 price = slimeTokenPrices[tokenId];
-        address tokenOwner = ownerOf(tokenId);
+    // 판매 등록
+    function setForSaleSlimeToken(uint256 _tokenId, uint256 _price) public {
+        address tokenOwner = ownerOf(_tokenId);
 
         // 조건검사
         require(tokenOwner == msg.sender, "Caller is not slime token owner.");
         require(price > 0, "Price is zero or lower");
-        require(slimeTokenPrices[tokenId] == 0, "This slime token is already on sale");
+        require(slimeTokenPrices[_tokenId] == 0, "This slime token is already on sale");
         //require(mintSlimeTokenAddress.isApprovedForAll(tokenOwner, address(this)), "Slime token owner did not approve token.");
 
-        slimeTokenPrices[tokenId] = price;
+        slimeTokenPrices[_tokenId] = _price;
 
-        onSaleSlimeTokenArray.push(tokenId);
+        onSaleSlimeTokenArray.push(_tokenId);
     }
 
     // 구매함수 
-    function purchaseSlimeToken(uint256 tokenId) external payable {
+    function purchaseSlimeToken(uint256 _tokenId) external payable {
         // 판매 등록되어 있는 가격 불러오기 
-        uint256 price = slimeTokenPrices[tokenId];
-        address tokenOwner = ownerOf(tokenId);
+        uint256 price = slimeTokenPrices[_tokenId];
+        address tokenOwner = ownerOf(_tokenId);
         // 가격이 0이하인 경우
         require(price <= 0, "Token is not on sale");
         // 구매자가 돈이 충분하지 않은 경우
@@ -84,16 +83,56 @@ contract SlimeCore is SlimeBase {
         require(tokenOwner == deployer, 'Purchase only from deployer');
 
         // 사려는 사람에게 소유권 추가
-        addOwnerShip(msg.sender, tokenId);
+        addOwnerShip(msg.sender, _tokenId);
         // 토큰 소유자에게 이더 보내기
         payable(tokenOwner).transfer(msg.value);
         // 토큰 소유자로부터 소유권 박탈 (-1로 초기화)
-        ownersTokenIdAtIndex[tokenOwner][tokenId] = -1;
+        ownersTokenIdAtIndex[tokenOwner][_tokenId] = -1;
+        // 판매 했으므로 가격 초기화
+        slimeTokenPrices[_tokenId] = 0;
+
+        for (uint256 i = 0; i < onSaleSlimeTokenArray.length; i++) {
+            tokenId = onSaleSlimeTokenArray[i];
+            if(slimeTokenPrices[tokenId] == 0) {
+                onSaleSlimeTokenArray[i] = onSaleSlimeTokenArray[onSaleSlimeTokenArray.length - 1];
+                onSaleSlimeTokenArray.pop();
+            }
+        }
     }
 
     // 프론트에서 판매중인 슬라임 토큰 갯수 보기 위한 함수
     function getOnSaleSlimeTokenArrayLength() view public returns (uint256) {
         return onSaleSlimeTokenArray.length;
+    }
+
+    // 현재 판매중인 슬라임 목록 리턴하는 함수
+    function getSlimeTokensOnSale() view public returns (SlimeMetaData[] memory) {
+        uint256 onSaleSlimeTokenLength = onSaleSlimeTokenArray.length;
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
+
+        for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
+            id = onSaleSlimeTokenArray[i];
+
+            string memory genes = slimes[id].genes;
+            uint256 fatherTokenId = slimes[id].fatherTokenId;
+            uint256 motherTokenId = slimes[id].motherTokenId;
+            string memory slimeType = slimes[i].slimeType; 
+            uint256 health = slimes[id].health;
+            uint256 attack = slimes[id].attack;
+            uint256 price = slimeTokenPrices[id];
+
+            slimeMetaData[i] = SlimeMetaData(
+                id,
+                genes,
+                slimeType,
+                fatherTokenId,
+                motherTokenId,
+                health,
+                attack,
+                price
+            );
+        }
+        return slimeMetaData;
     }
 
     // 프론트에서 슬라임 정보 보기 위한 함수
@@ -134,7 +173,15 @@ contract SlimeCore is SlimeBase {
             uint256 attack = slimes[id].attack;
             uint256 price = slimeTokenPrices[id];
 
-            slimeMetaData[i] = SlimeMetaData(id,genes,slimeType,fatherTokenId,motherTokenId,health,attack,price);
+            slimeMetaData[i] = SlimeMetaData(
+                id,genes,
+                slimeType,
+                fatherTokenId,
+                motherTokenId,
+                health,
+                attack,
+                price
+            );
         }
 
     return slimeMetaData;
