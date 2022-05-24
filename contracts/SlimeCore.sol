@@ -7,6 +7,18 @@ import './SlimeBase.sol';
 
 contract SlimeCore is SlimeBase {
 
+    // 프론트엔드를 위한 슬라임 struct
+    struct SlimeMetaData {
+        uint256 _id;
+        string _genes;
+        string _type;
+        uint256 _fatherTokenId;
+        uint256 _motherTokenId;
+        uint256 _health;
+        uint256 _attack;
+        uint256 _price;
+    }
+
     // 프론트앤드와 소통하기 위한 이벤트
     // 소유자 주소와 토큰Id 받기
     event Received(address, uint256);
@@ -29,10 +41,11 @@ contract SlimeCore is SlimeBase {
         // setDeployer(msg.sender);
     }
 
+    // web3 type문제로 인해 주석처리
     // 이더를 받기위한 fallback 함수 (external, payable 필수)
-    receive() external payable {
-        emit Received(msg.sender, msg.value);
-    }
+    // receive() external payable {
+    //     emit Received(msg.sender, msg.value);
+    // }
 
     // SlimeTokenId => price
     mapping(uint256 => uint256) public slimeTokenPrices;
@@ -98,6 +111,33 @@ contract SlimeCore is SlimeBase {
         _health = slimes[_tokenId].health;
         _attack = slimes[_tokenId].attack;
         //_rarity = slimeCountPerGene[slimes[_tokenId].genes];
+
+        return (_genes,_fatherTokenId,_motherTokenId,_health,_attack);
+    }
+    
+    // 해당 계정이 가진 모든 슬라임 정보 반환
+    function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
+        uint256 balanceLength = balanceOf(_slimeTokenOwner);
+    
+        require(balanceLength != 0, 'Owner has no Slime token');
+
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
+
+        for (uint256 i = 0; i < balanceLength; i++) {
+            uint256 id = tokenOfOwnerByIndex(_slimeTokenOwner, i); // nft id
+
+            string memory genes = slimes[id].genes;
+            uint256 fatherTokenId = slimes[id].fatherTokenId;
+            uint256 motherTokenId = slimes[id].motherTokenId;
+            string memory slimeType = slimes[id].slimeType; 
+            uint256 health = slimes[id].health;
+            uint256 attack = slimes[id].attack;
+            uint256 price = slimeTokenPrices[id];
+
+            slimeMetaData[i] = SlimeMetaData(id,genes,slimeType,fatherTokenId,motherTokenId,health,attack,price);
+        }
+
+    return slimeMetaData;
     }
 
     // 슬라임 브리딩하는 함수

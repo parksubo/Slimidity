@@ -3,11 +3,11 @@ pragma solidity ^0.8.0;
 
 // import 'hardhat/console.sol';
 
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import '@openzeppelin/contracts/utils/Counters.sol';
 import './GeneScience.sol';
 
-contract SlimeBase is ERC721, GeneScience {
+contract SlimeBase is ERC721Enumerable, GeneScience {
     using Counters for Counters.Counter;
 
     // 슬라임은 유전자, 부모의 토큰 아이디, 체력, 공격력으로 구성
