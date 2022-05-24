@@ -2,13 +2,21 @@ import React, { FC, MouseEvent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 
-const Header: FC = ({ children }) => {
+interface HeaderProps {
+  getAccount: () => void;
+}
+
+const Header: FC<HeaderProps> = ({ children, getAccount }) => {
   const [clicked, setClicked] = useState([false, false, false, false]);
 
   const changeButtonColor = (num: number) => {
     let newClicked = [false, false, false, false];
     newClicked[num] = true;
     setClicked(newClicked);
+  };
+
+  const handleLogin = () => {
+    getAccount();
   };
   return (
     <div className={styles.container}>
@@ -53,7 +61,10 @@ const Header: FC = ({ children }) => {
             Game
           </button>
         </Link>
-        <button className={`${styles.headerBtn} ${styles.loginBtn}`}>
+        <button
+          className={`${styles.headerBtn} ${styles.loginBtn}`}
+          onClick={handleLogin}
+        >
           Login
         </button>
       </div>
