@@ -1,15 +1,64 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import NFTCard from '../../components/MyNFTPage/NFTCard';
 import styles from './MyNFTPage.module.css';
-import { NFT } from '../../common/DataTypes';
+import { ISlimeMetaData } from '../../common/DataTypes';
+import { SlimeCoreContract } from '../../contracts';
 
-const MyNFTPage: FC = () => {
-  const [nfts, setNfts] = useState<Array<NFT>>([
-    { id: '1', type: 'ice', attack: 1, price: 0 },
-    { id: '2', type: 'fire', attack: 2, price: 0 },
-    { id: '3', type: 'wind', attack: 4, price: 0.9 },
-    { id: '4', type: 'ice', attack: 3, price: 1.4 },
-  ]); // 추후 contract에서 nft받아오기
+interface MyNFTPageProps {
+  account: string;
+}
+
+const MyNFTPage: FC<MyNFTPageProps> = ({ account }) => {
+  const [slimeCards, setSlimeCards] = useState<ISlimeMetaData[]>([]);
+
+  const getAnimalTokens = async () => {
+    try {
+      if (!account) return;
+
+      // account가 가진 nft 수
+      const balanceLength: string = await SlimeCoreContract.methods //
+        .balanceOf(account)
+        .call();
+
+      if (balanceLength === '0') return;
+
+      // 소유한 slime 정보 얻기
+      const tempSlimeCards: ISlimeMetaData[] = [];
+
+      const response = await SlimeCoreContract.methods
+        .getSlimeTokensByAccount(account)
+        .call();
+
+      response.map((slime: ISlimeMetaData) => {
+        tempSlimeCards.push({
+          _id: slime._id,
+          _genes: slime._genes,
+          _type: slime._type,
+          _fatherTokenId: slime._fatherTokenId,
+          _motherTokenId: slime._motherTokenId,
+          _health: slime._health,
+          _attack: slime._attack,
+          _price: slime._price,
+        });
+      });
+      console.log(response);
+      // setstate
+      setSlimeCards(tempSlimeCards);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!account) return;
+    console.log(`Account: ${account} connected!`);
+
+    getAnimalTokens();
+
+    return () => {
+      setSlimeCards([]);
+    };
+  }, [account]);
 
   return (
     <div className={styles.container}>
@@ -17,13 +66,17 @@ const MyNFTPage: FC = () => {
         <span>NFT를 판매하거나 판매취소할 수 있습니다.</span>
       </div>
       <div className={styles.cards}>
-        {nfts.map((nft) => (
-          <div className={styles.card} key={nft.id} data-id={nft.id}>
+        {slimeCards.map((slimeCard) => (
+          <div
+            className={styles.card}
+            key={slimeCard._id}
+            data-id={slimeCard._id}
+          >
             <NFTCard
-              id={nft.id}
-              type={nft.type}
-              attack={nft.attack}
-              price={nft.price}
+              id={slimeCard._id}
+              type={slimeCard._type}
+              attack={slimeCard._attack}
+              price={slimeCard._price}
             />
           </div>
         ))}
