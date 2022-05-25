@@ -99,6 +99,35 @@ const Breeding: FC<BreedingProps> = ({ account }) => {
 
     setClicked(newClicked);
   };
+  const onClickBreedingBtn = async () => {
+    if (clicked.length < 2) {
+      alert('슬라임 두 개를 선택해주세요.');
+      return false;
+    }
+    const fatherTokenid = clicked[0]._id;
+    const motherTokenid = clicked[1]._id;
+
+    const response = await SlimeCoreContract.methods
+      .breedslimes(fatherTokenid, motherTokenid)
+      .send({ from: account });
+
+    const newSlime = response.events.Birth.returnValues;
+    const tempSlimeCards: ISlimeMetaData[] = [];
+
+    tempSlimeCards.push({
+      _id: newSlime.id,
+      _genes: newSlime.genes,
+      _type: newSlime.slimeType,
+      _fatherTokenId: newSlime.fatherTokenId,
+      _motherTokenId: newSlime.motherTokenId,
+      _health: newSlime.health,
+      _attack: newSlime.attack,
+      _price: newSlime._price,
+    });
+
+    // setstate
+    setSlimeCards((prevSlimeCards) => [...prevSlimeCards, ...tempSlimeCards]);
+  };
 
   return (
     <div className={styles.container}>
@@ -171,7 +200,12 @@ const Breeding: FC<BreedingProps> = ({ account }) => {
           )}
         </div>
         <div className={styles.breedingBtn}>
-          <button className="btn btn-outline-secondary">브리딩 하기</button>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={onClickBreedingBtn}
+          >
+            브리딩 하기
+          </button>
         </div>
       </div>
     </div>
