@@ -37,7 +37,7 @@ const App: FC = () => {
           <Route path="/" element={<Main />} />
           <Route path="/Marketplace" element={<Marketplace />} />
           <Route path="/MyNFTPage" element={<MyNFTPage account={account} />} />
-          <Route path="/Breeding" element={<Breeding />} />
+          <Route path="/Breeding" element={<Breeding account={account} />} />
           <Route path="/Game" element={<Game />} />
         </Routes>
       </Header>
