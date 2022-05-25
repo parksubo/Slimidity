@@ -59,7 +59,7 @@ contract SlimeCore is SlimeBase {
 
         // 조건검사
         require(tokenOwner == msg.sender, "Caller is not slime token owner.");
-        require(price > 0, "Price is zero or lower");
+        require(_price > 0, "Price is zero or lower");
         require(slimeTokenPrices[_tokenId] == 0, "This slime token is already on sale");
         //require(mintSlimeTokenAddress.isApprovedForAll(tokenOwner, address(this)), "Slime token owner did not approve token.");
 
@@ -92,8 +92,8 @@ contract SlimeCore is SlimeBase {
         slimeTokenPrices[_tokenId] = 0;
 
         for (uint256 i = 0; i < onSaleSlimeTokenArray.length; i++) {
-            tokenId = onSaleSlimeTokenArray[i];
-            if(slimeTokenPrices[tokenId] == 0) {
+            _tokenId = onSaleSlimeTokenArray[i];
+            if(slimeTokenPrices[_tokenId] == 0) {
                 onSaleSlimeTokenArray[i] = onSaleSlimeTokenArray[onSaleSlimeTokenArray.length - 1];
                 onSaleSlimeTokenArray.pop();
             }
@@ -108,10 +108,10 @@ contract SlimeCore is SlimeBase {
     // 현재 판매중인 슬라임 목록 리턴하는 함수
     function getSlimeTokensOnSale() view public returns (SlimeMetaData[] memory) {
         uint256 onSaleSlimeTokenLength = onSaleSlimeTokenArray.length;
-        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](onSaleSlimeTokenLength);
 
         for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
-            id = onSaleSlimeTokenArray[i];
+            uint256 id = onSaleSlimeTokenArray[i];
 
             string memory genes = slimes[id].genes;
             uint256 fatherTokenId = slimes[id].fatherTokenId;
@@ -189,7 +189,7 @@ contract SlimeCore is SlimeBase {
 
     // 슬라임 브리딩하는 함수
     function breedslimes(uint256 _fatherTokenId, uint256 _motherTokenId) external {
-        require(msg.sender != deployer, 'Disallow deployer to breed');
+        // require(msg.sender != deployer, 'Disallow deployer to breed');
         require(ownerOf(_fatherTokenId) == msg.sender, 'Sender must own the token');
         require(ownerOf(_motherTokenId) == msg.sender, 'Sender must own the token');
 
