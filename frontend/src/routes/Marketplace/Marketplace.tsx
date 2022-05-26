@@ -19,10 +19,10 @@ type RangeSlider = {
 };
 
 const NFTsOnChain: NFT[] = [
-  { id: '1', type: 'ice', attack: 1, price: 4 },
-  { id: '2', type: 'fire', attack: 2, price: 1 },
-  { id: '3', type: 'wind', attack: 4, price: 3 },
-  { id: '4', type: 'ice', attack: 10, price: 20 },
+  { id: '1', type: 'ice', attack: 1, price: '4' },
+  { id: '2', type: 'fire', attack: 2, price: '1' },
+  { id: '3', type: 'wind', attack: 4, price: '3' },
+  { id: '4', type: 'ice', attack: 10, price: '20' },
 ];
 
 export interface IMarketpalceProps {}
@@ -46,10 +46,10 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     let sortedNfts: NFT[] = [...nfts];
     switch (command) {
       case '0':
-        sortedNfts.sort((a, b) => b.price - a.price);
+        sortedNfts.sort((a, b) => parseInt(b.price) - parseInt(a.price));
         break;
       case '1':
-        sortedNfts.sort((a, b) => a.price - b.price);
+        sortedNfts.sort((a, b) => parseInt(a.price) - parseInt(b.price));
         break;
       case '2':
         sortedNfts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
@@ -103,7 +103,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     event: Event,
     newValue: number | number[]
   ) => {
-    const changedRange: number[] = (event.target as any as RangeSlider).value;
+    const changedRange: number[] = ((event.target as any) as RangeSlider).value;
     // 이전 범위와 같은 범위라면(검색 조건 변화가 없다면) 정렬x
     if (JSON.stringify(attackValue) == JSON.stringify(changedRange)) {
       return false;

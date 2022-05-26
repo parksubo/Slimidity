@@ -6,26 +6,23 @@ import { SlimeCoreContract, web3 } from '../../contracts';
 
 const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
   const { account } = useContext(accountContext);
-  const [sellPrice, setSellPrice] = useState<number>(price);
-  const [inputPrice, setInputPrice] = useState<number>(price);
+  const [sellPrice, setSellPrice] = useState<string>(price);
+  const [inputPrice, setInputPrice] = useState<string>(price);
 
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputPrice(parseInt(e.target.value));
+    setInputPrice(e.target.value);
   };
 
   const onClickSell = async () => {
     if (!account) return;
 
     const response = await SlimeCoreContract.methods //
-      .setForSaleSlimeToken(
-        id,
-        web3.utils.toWei(inputPrice.toString(), 'ether')
-      )
+      .setForSaleSlimeToken(id, web3.utils.toWei(inputPrice, 'ether'))
       .send({ from: account });
 
     if (response.status) {
       // toWei로 set해야 fromWei할때 형변환 에러나지 않는다.
-      setSellPrice(parseInt(web3.utils.toWei(inputPrice.toString(), 'ether')));
+      setSellPrice(web3.utils.toWei(inputPrice, 'ether'));
     }
   };
 
@@ -34,15 +31,13 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
       <span>id: {id}</span>
       <img src={require('../../images/IceSlime.png')} className={styles.img} />
       <div className={styles.metadata}>
-        {sellPrice > 0 && (
-          <span>{`가격: ${web3.utils.fromWei(
-            sellPrice.toString()
-          )} ether`}</span>
+        {sellPrice !== '0' && (
+          <span>{`가격: ${web3.utils.fromWei(sellPrice)} ether`}</span>
         )}
         <span>타입: {type}</span>
         <span>공격력: {attack}</span>
       </div>
-      {sellPrice > 0 ? (
+      {sellPrice !== '0' ? (
         <button className={styles.cancelButton}>판매취소</button>
       ) : (
         <div className={styles.sellContainer}>
