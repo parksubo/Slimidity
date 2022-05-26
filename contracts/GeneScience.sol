@@ -3,31 +3,40 @@
 pragma solidity ^0.8.0;
 
 contract Constants {
-    uint256 internal constant HUNDRED = 100;
+    uint256 internal constant MAX = 999;
     uint256 internal constant GENE_LENGTH = 9;
 }
 
 contract GeneScience is Constants {
-    function mixGene(string memory _fatherGene, string memory _motherGene) internal view returns (string memory) {
-        bool a = isGeneScience(_fatherGene);
-        bool b = isGeneScience(_motherGene);
-        require(a&&b, "Invalid gene");
+    // 세가지 요소 합쳐서 리턴: Type + Health + Attack -> newGene
+    function mixGeneReturnAll(string memory _fatherGene, string memory _motherGene) internal view returns (string memory, string memory, uint256, uint256) {
+        string memory newGene;
+        string memory newType;
+        uint256 newHealth;
+        uint256 newAttack;
 
-        bytes memory _fatherGeneBytes = bytes(_fatherGene);
-        bytes memory _motherGeneBytes = bytes(_motherGene);
-        bytes memory newGene = new bytes(GENE_LENGTH);
+        newType = mixGeneReturnType(_fatherGene, _motherGene);
+        newHealth = mixGeneReturnHealth(_fatherGene, _motherGene);
+        newAttack = mixGeneReturnAttack(_fatherGene, _motherGene);
 
-        // solidity에서 random 만들기
-        uint256 randomNumber = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, HUNDRED))) % 2;
-        
-        if(randomNumber == 0) {
-            newGene = "000100010";
+        // strcmp
+        if(keccak256(bytes(newType)) == keccak256(bytes("green"))) {
+            newGene = "000";
+        }
+        else if(keccak256(bytes(newType)) == keccak256(bytes("pink"))) {
+            newGene = "001";
         }
         else {
-            newGene = "001100010";
+            newGene = "002";
+
         }
 
-        return string(newGene);
+        // string concat
+        string memory temp;
+        temp = string(bytes.concat(bytes(uint2str(newHealth)), bytes(uint2str(newAttack))));
+        newGene = string(bytes.concat(bytes(newGene), bytes(temp)));   
+
+        return (newGene, newType, newHealth, newAttack);
     }
     
     // father mother 유전자 받아서 타입 리턴: bytes1
