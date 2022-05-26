@@ -3,14 +3,14 @@ export type NFT = {
   id: string;
   type: string;
   attack: number;
-  price: number;
+  price: string;
 };
 
 export interface NFTCardProps {
   id: string;
   type: string;
   attack: number;
-  price: number;
+  price: string;
 }
 
 export interface ISlimeMetaData {
@@ -21,5 +21,5 @@ export interface ISlimeMetaData {
   _motherTokenId: number;
   _health: number;
   _attack: number;
-  _price: number;
+  _price: string;
 }

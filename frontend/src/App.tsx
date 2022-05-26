@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { createContext, FC, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Breeding from './routes/Breeding/Breeding';
@@ -6,6 +6,11 @@ import Game from './routes/Game/Game';
 import Main from './routes/Main/Main';
 import Marketplace from './routes/Marketplace/Marketplace';
 import MyNFTPage from './routes/MyNFTPage/MyNFTPage';
+
+export const accountContext = createContext({
+  account: '',
+});
+
 const App: FC = () => {
   const [account, setAccount] = useState<string>('');
 
@@ -33,13 +38,15 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <Header getAccount={getAccount}>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/Marketplace" element={<Marketplace />} />
-          <Route path="/MyNFTPage" element={<MyNFTPage account={account} />} />
-          <Route path="/Breeding" element={<Breeding />} />
-          <Route path="/Game" element={<Game />} />
-        </Routes>
+        <accountContext.Provider value={{ account }}>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/Marketplace" element={<Marketplace />} />
+            <Route path="/MyNFTPage" element={<MyNFTPage />} />
+            <Route path="/Breeding" element={<Breeding />} />
+            <Route path="/Game" element={<Game />} />
+          </Routes>
+        </accountContext.Provider>
       </Header>
     </BrowserRouter>
   );

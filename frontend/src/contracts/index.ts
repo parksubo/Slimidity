@@ -59,6 +59,24 @@ const SlimeCoreAbi: AbiItem[] = [
     type: 'event',
   },
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'approve',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -114,6 +132,55 @@ const SlimeCoreAbi: AbiItem[] = [
     type: 'event',
   },
   {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_fatherTokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_motherTokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'breedslimes',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_genes',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_type',
+        type: 'string',
+      },
+    ],
+    name: 'mintGenesisSlime',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'purchaseSlimeToken',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -131,6 +198,93 @@ const SlimeCoreAbi: AbiItem[] = [
     ],
     name: 'Received',
     type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: '_data',
+        type: 'bytes',
+      },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'approved',
+        type: 'bool',
+      },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_price',
+        type: 'uint256',
+      },
+    ],
+    name: 'setForSaleSlimeToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     anonymous: false,
@@ -161,6 +315,11 @@ const SlimeCoreAbi: AbiItem[] = [
     inputs: [
       {
         internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
         name: 'to',
         type: 'address',
       },
@@ -170,7 +329,7 @@ const SlimeCoreAbi: AbiItem[] = [
         type: 'uint256',
       },
     ],
-    name: 'approve',
+    name: 'transferFrom',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -205,24 +364,6 @@ const SlimeCoreAbi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_fatherTokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_motherTokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'breedslimes',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -384,6 +525,61 @@ const SlimeCoreAbi: AbiItem[] = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'getSlimeTokensOnSale',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: '_id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: '_genes',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: '_type',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: '_fatherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_motherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_health',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_attack',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct SlimeCore.SlimeMetaData[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'address',
@@ -437,19 +633,6 @@ const SlimeCoreAbi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: '_genes',
-        type: 'string',
-      },
-    ],
-    name: 'mintGenesisSlime',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -554,101 +737,6 @@ const SlimeCoreAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'purchaseSlimeToken',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
-      },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'setForSaleSlimeToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'string',
         name: '',
         type: 'string',
@@ -672,25 +760,6 @@ const SlimeCoreAbi: AbiItem[] = [
       {
         internalType: 'uint256',
         name: '_value',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'slimeTokenPrices',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
         type: 'uint256',
       },
     ],
@@ -735,6 +804,25 @@ const SlimeCoreAbi: AbiItem[] = [
       {
         internalType: 'uint256',
         name: 'attack',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'slimeTokenPrices',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
         type: 'uint256',
       },
     ],
@@ -846,29 +934,6 @@ const SlimeCoreAbi: AbiItem[] = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
 ];
@@ -1735,7 +1800,7 @@ const GeneScienceAbi: AbiItem[] = [
 ];
 
 // remix에서 polygon mumbai testnet에 배포하여 생기는 컨트랙트 주소 붙여넣기
-const SlimeCoreAddress = '0x59F30928044044DD7bB54C5a2B19727636dfc657';
+const SlimeCoreAddress = '0xBF5DC25B4b7C159Fce4528C577ead8678a805B2C';
 const SlimeBaseAddress = '0xc39F61594820364Ee2830eDC77c0E62AffBa287e';
 const GeneScienceAddress = '0x93ae209858d22Ec64aDeFd955d7aE61FC7cfaa39';
 

@@ -1,15 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/MyNFTPage/NFTCard';
 import styles from './MyNFTPage.module.css';
 import { ISlimeMetaData } from '../../common/DataTypes';
 import { SlimeCoreContract } from '../../contracts';
+import { accountContext } from '../../App';
 
-interface MyNFTPageProps {
-  account: string;
-}
-
-const MyNFTPage: FC<MyNFTPageProps> = ({ account }) => {
+const MyNFTPage: FC = () => {
   const [slimeCards, setSlimeCards] = useState<ISlimeMetaData[]>([]);
+  const { account } = useContext(accountContext);
 
   const getAnimalTokens = async () => {
     try {

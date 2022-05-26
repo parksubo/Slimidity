@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import DropDownSearch from '../../components/Marketplace/DropDownSearch';
 import NFTCard from '../../components/Marketplace/NFTCard';
 import { ReactComponent as RightArrowImg } from '../../icons/arrow-right-solid.svg';
@@ -6,7 +6,8 @@ import { ReactComponent as LeftArrowImg } from '../../icons/arrow-left-solid.svg
 import { ReactComponent as CaretUp } from '../../icons/caret-up-solid.svg';
 import styles from './Marketplace.module.css';
 import RangeSlider from '../../components/Marketplace/Filter/RangeSlider';
-import { NFT } from '../../common/DataTypes'; // NFT type
+import { ISlimeMetaData } from '../../common/DataTypes';
+import { SlimeCoreContract } from '../../contracts';
 
 type Filters = {
   type: boolean;
@@ -18,17 +19,12 @@ type RangeSlider = {
   name: string;
 };
 
-const NFTsOnChain: NFT[] = [
-  { id: '1', type: 'ice', attack: 1, price: 4 },
-  { id: '2', type: 'fire', attack: 2, price: 1 },
-  { id: '3', type: 'wind', attack: 4, price: 3 },
-  { id: '4', type: 'ice', attack: 10, price: 20 },
-];
+let NFTsOnChain: ISlimeMetaData[] = [];
 
 export interface IMarketpalceProps {}
 
 const Marketplace: FC<IMarketpalceProps> = (props) => {
-  const [nfts, setNfts] = useState<NFT[]>(NFTsOnChain); // 추후 contract에서 nft받아오기
+  const [nfts, setNfts] = useState<ISlimeMetaData[]>(NFTsOnChain); // 추후 contract에서 nft받아오기
 
   const [isTriggerOpen, setIsTriggerOpen] = useState<Filters>({
     type: true,
@@ -43,16 +39,16 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
   // !!추후수정!! latest는 id가 아닌 실제 mint 시간을 이용해서 정렬해야함.
   const onClickSort = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     const command: string | null = e.currentTarget.getAttribute('data-command');
-    let sortedNfts: NFT[] = [...nfts];
+    let sortedNfts: ISlimeMetaData[] = [...nfts];
     switch (command) {
       case '0':
-        sortedNfts.sort((a, b) => b.price - a.price);
+        sortedNfts.sort((a, b) => parseInt(b._price) - parseInt(a._price));
         break;
       case '1':
-        sortedNfts.sort((a, b) => a.price - b.price);
+        sortedNfts.sort((a, b) => parseInt(a._price) - parseInt(b._price));
         break;
       case '2':
-        sortedNfts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+        sortedNfts.sort((a, b) => parseInt(a._id) - parseInt(b._id));
         break;
       default:
         break;
@@ -81,7 +77,9 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     const type: string | null = e.currentTarget.getAttribute('data-name');
 
     if (name != null) {
-      let sortedNfts: NFT[] = NFTsOnChain.filter((nft) => nft.type === type);
+      let sortedNfts: ISlimeMetaData[] = NFTsOnChain.filter(
+        (nft) => nft._type === type
+      );
       setNfts(sortedNfts);
     } else {
       throw new Error('triggerOpen Error');
@@ -91,10 +89,10 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
   const filterNFTsFromRange = (
     min: number,
     max: number,
-    NFTArray: NFT[]
-  ): NFT[] => {
-    let sortedNFTs: NFT[] = NFTArray.filter(
-      (nft) => min <= nft.attack && nft.attack <= max
+    NFTArray: ISlimeMetaData[]
+  ): ISlimeMetaData[] => {
+    let sortedNFTs: ISlimeMetaData[] = NFTArray.filter(
+      (nft) => min <= nft._attack && nft._attack <= max
     );
     return sortedNFTs;
   };
@@ -103,7 +101,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     event: Event,
     newValue: number | number[]
   ) => {
-    const changedRange: number[] = (event.target as any as RangeSlider).value;
+    const changedRange: number[] = ((event.target as any) as RangeSlider).value;
     // 이전 범위와 같은 범위라면(검색 조건 변화가 없다면) 정렬x
     if (JSON.stringify(attackValue) == JSON.stringify(changedRange)) {
       return false;
@@ -159,6 +157,21 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     }
   };
 
+  const setSlimeCardsOnSale = async () => {
+    try {
+      const slimeCardsOnSale: ISlimeMetaData[] = await SlimeCoreContract.methods
+        .getSlimeTokensOnSale()
+        .call();
+
+      setNfts(slimeCardsOnSale);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    setSlimeCardsOnSale();
+  }, [NFTsOnChain]);
   return (
     <div className={styles.rootContainer}>
       <div className={styles.left}>
@@ -239,12 +252,12 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
         </div>
         <div className={styles.cardList}>
           {nfts.map((nft) => (
-            <div className={styles.card} key={nft.id} data-id={nft.id}>
+            <div className={styles.card} key={nft._id} data-id={nft._id}>
               <NFTCard
-                id={nft.id}
-                type={nft.type}
-                attack={nft.attack}
-                price={nft.price}
+                id={nft._id}
+                type={nft._type}
+                attack={nft._attack}
+                price={nft._price}
               />
             </div>
           ))}

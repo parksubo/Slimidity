@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styles from './NFTCard.module.css';
 import { NFTCardProps } from '../../common/DataTypes';
+import { web3 } from '../../contracts';
 
 const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
   return (
@@ -13,7 +14,7 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
         />
       </div>
       <div className={styles.metadata}>
-        <span>가격: {price}</span>
+        <span>가격: {web3.utils.fromWei(price)}</span>
         <span>타입: {type}</span>
         <span>공격력: {attack}</span>
       </div>
