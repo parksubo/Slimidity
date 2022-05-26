@@ -65,6 +65,40 @@ contract GeneScience is Constants {
         return newType;
     }
 
+    // father mother 유전자 받아서 체력 리턴: uint256
+    function mixGeneReturnHealth(string memory _fatherGene, string memory _motherGene) internal view returns (uint256) {
+        bool a = isGeneScience(_fatherGene);
+        bool b = isGeneScience(_motherGene);
+        require(a&&b, "Invalid gene");
+        bytes memory _fatherGeneBytes = bytes(_fatherGene);
+        bytes memory _motherGeneBytes = bytes(_motherGene);
+        uint256 newHealth;
+        bytes memory tempBytes1 = new bytes(3);
+        bytes memory tempBytes2 = new bytes(3);
+        uint256 tempInt1;
+        uint256 tempInt2;
+        for(uint256 i = 3; i < 6; i++) {
+            tempBytes1[i-3] = _fatherGeneBytes[i];
+            tempBytes2[i-3] = _motherGeneBytes[i];
+        }
+        tempInt1 = bytesToUint256(tempBytes1);
+        tempInt2 = bytesToUint256(tempBytes2);   
+        // tempInt1 과 tempInt2 중 더 큰 값이 tempInt1로 만들기 위한 swap
+        swapLeftBigger(tempInt1, tempInt2);
+        //father mother중 능력치가 더 높은 곳 의 20퍼센트 , 낮은곳의 20퍼센트 안에서 랜덤 추출
+        tempInt1 = (tempInt1 * 120)/100;
+        tempInt2 = (tempInt2 * 80)/100;
+        uint256 gap = tempInt1 - tempInt2;
+        uint256 randomNumber = (uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, MAX))) % gap) + tempInt2;
+        // 최솟값은 100으로 유지
+        if(randomNumber <= 100) {
+            randomNumber = 100;
+        }
+        newHealth = randomNumber;
+        
+        return newHealth;
+    }
+
     // bytes로 유전자 정보를 받아 길이가 9인지 확인하는 함수
     function isGeneScience(string memory _genes) internal pure returns (bool) {
         bytes memory byteGenes = bytes(_genes);
@@ -98,5 +132,28 @@ contract GeneScience is Constants {
         }
 
         return string(bstr);
+    }
+
+    // 항상 왼쪽이 uint value가 더 크게 만들어주는 함수
+    function swapLeftBigger(uint256 a, uint256 b) public pure returns (uint256, uint256) {
+        uint256 c;
+        if(a < b) {
+            c = a;
+            a = b;
+            b = c;
+        }
+        return (a, b);
+    }
+
+    // bytes -> uint256
+    function bytesToUint256(bytes memory b) public pure returns (uint256){
+        uint256 number = 0;     
+        for(uint i=0; i<3; i++){
+            number = number + uint8(b[i]) - 48;
+            if(i < 2) {
+                number = number * 10;
+            }
+        }       
+        return number;
     }
 }
