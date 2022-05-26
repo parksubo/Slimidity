@@ -36,7 +36,9 @@ contract SlimeBreed is SlimeBase {
 
     constructor() SlimeBase() {
         // genes, fatherTokenId, motherTokenId, health, attack, owner
-        createSlime('000000000', 0, 0, "green", 100, 10, msg.sender);
+        createSlime('000300100', 0, 0, "green", 300, 100, msg.sender);
+        createSlime('001300100', 0, 0, "pink", 300, 100, msg.sender);
+        createSlime('002300100', 0, 0, "blue", 300, 100, msg.sender);
         // 토큰을 배포한 주소를 담는다.
         // setDeployer(msg.sender);
     }
