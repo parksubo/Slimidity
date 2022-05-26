@@ -120,9 +120,8 @@ const Breeding: FC = () => {
       _motherTokenId: newSlime.motherTokenId,
       _health: newSlime.health,
       _attack: newSlime.attack,
-      _price: newSlime._price,
+      _price: '0', // 브리딩 결과로 나온 slime은 가격이 0
     });
-
     // setstate
     setSlimeCards((prevSlimeCards) => [...prevSlimeCards, ...tempSlimeCards]);
   };
