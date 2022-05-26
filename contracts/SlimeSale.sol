@@ -2,11 +2,11 @@
 pragma solidity ^0.8.0;
 
 //import 'hardhat/console.sol';
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import './SlimeBase.sol';
+import './SlimeBreed.sol';
 
-contract SlimeCore is SlimeBase {
-
+contract SlimeSale is SlimeBase {
+  
     // SlimeTokenId => price
     mapping(uint256 => uint256) public slimeTokenPrices;
 
@@ -91,7 +91,6 @@ contract SlimeCore is SlimeBase {
         return slimeMetaData;
     }
 
-    
     // 해당 계정이 가진 모든 슬라임 정보 반환
     function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
         uint256 balanceLength = balanceOf(_slimeTokenOwner);
@@ -124,39 +123,4 @@ contract SlimeCore is SlimeBase {
 
     return slimeMetaData;
     }
-    
-    // function getTokenIds(address _owner) external view returns (uint256[] memory) {
-    //     // 소유자의 토큰 소지 갯수
-    //     uint256 arrLength = ownersTokenIds[_owner].length;
-    //     uint256[] memory tokens = new uint256[](balanceOf(_owner));
-    //     uint256 tokenIdx = 0;
-        
-    //     for (uint256 i = 0; i < arrLength; i++) {
-    //         uint256 tokenId = ownersTokenIds[_owner][i];
-
-    //         if (int256(ownersTokenIdAtIndex[_owner][tokenId]) != -1) {
-    //             tokens[tokenIdx] = tokenId;
-    //             tokenIdx += 1;
-    //         }
-    //     }
-
-    //     return tokens;
-    // }
-    // function getTokensOfDeployer() external view returns (uint256[] memory) {
-    //     require(deployer != address(0x0), 'Deployer must set first');
-
-    //     uint256 arrLength = ownersTokenIds[deployer].length;
-    //     uint256[] memory tokens = new uint256[](balanceOf(deployer));
-    //     uint256 tokenIdx = 0;
-
-    //     for (uint256 i = 0; i < arrLength ; i++) {
-    //         uint256 tokenId = ownersTokenIds[deployer][i];
-
-    //         if (ownersTokenIdAtIndex[deployer][tokenId] != -1) {
-    //             tokens[tokenIdx] = tokenId;
-    //             tokenIdx += 1;
-    //         }
-    //     }
-    //     return tokens;
-    // }
 }
