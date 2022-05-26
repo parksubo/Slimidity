@@ -99,6 +99,42 @@ contract GeneScience is Constants {
         return newHealth;
     }
 
+     // father mother 유전자 받아서 공격력 리턴: uint256
+    function mixGeneReturnAttack(string memory _fatherGene, string memory _motherGene) internal view returns (uint256) {
+        bool a = isGeneScience(_fatherGene);
+        bool b = isGeneScience(_motherGene);
+        require(a&&b, "Invalid gene");
+
+        bytes memory _fatherGeneBytes = bytes(_fatherGene);
+        bytes memory _motherGeneBytes = bytes(_motherGene);
+        uint256 newAttack;
+        bytes memory tempBytes1 = new bytes(3);
+        bytes memory tempBytes2 = new bytes(3);
+
+        uint256 tempInt1;
+        uint256 tempInt2;
+        for(uint256 i = 6; i < 9; i++) {
+            tempBytes1[i-6] = _fatherGeneBytes[i];
+            tempBytes2[i-6] = _motherGeneBytes[i];
+        }
+        tempInt1 = bytesToUint256(tempBytes1);
+        tempInt2 = bytesToUint256(tempBytes2);
+        // tempInt1 과 tempInt2 중 더 큰 값이 tempInt1로 만들기 위한 swap
+        swapLeftBigger(tempInt1, tempInt2);
+        //father mother중 능력치가 더 높은 곳 의 10퍼센트 , 낮은곳의 10퍼센트 안에서 랜덤 추출
+        tempInt1 = (tempInt1 * 110)/100;
+        tempInt2 = (tempInt2 * 90)/100;
+        uint256 gap = tempInt1 - tempInt2;
+        uint256 randomNumber = (uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, MAX))) % gap) + tempInt2;
+        // 최솟값은 100으로 유지
+        if(randomNumber <= 100) {
+            randomNumber = 100;
+        }
+        newAttack = randomNumber;
+        
+        return newAttack;
+    }
+
     // bytes로 유전자 정보를 받아 길이가 9인지 확인하는 함수
     function isGeneScience(string memory _genes) internal pure returns (bool) {
         bytes memory byteGenes = bytes(_genes);
