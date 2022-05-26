@@ -51,56 +51,49 @@ contract SlimeBreed is SlimeBase {
     // 프론트에서 슬라임 정보 보기 위한 함수
     function getSlimeByTokenId(uint256 _tokenId) public view returns (
             string memory _genes,
+            string memory _type,
             uint256 _fatherTokenId,
             uint256 _motherTokenId,
             uint256 _health,
             uint256 _attack
-            //uint256 _rarity
         )   {
         _genes = slimes[_tokenId].genes;
+        _type = slimes[_tokenId].slimeType;
         _fatherTokenId = slimes[_tokenId].fatherTokenId;
         _motherTokenId = slimes[_tokenId].motherTokenId;
         _health = slimes[_tokenId].health;
         _attack = slimes[_tokenId].attack;
-        //_rarity = slimeCountPerGene[slimes[_tokenId].genes];
 
-        return (_genes,_fatherTokenId,_motherTokenId,_health,_attack);
+        return (_genes, _type, _fatherTokenId,_motherTokenId,_health,_attack);
     }
       
     // 슬라임 브리딩하는 함수
     function breedslimes(uint256 _fatherTokenId, uint256 _motherTokenId) external {
-        // require(msg.sender != deployer, 'Disallow deployer to breed');
+        //require(msg.sender != deployer, 'Disallow deployer to breed');
         require(ownerOf(_fatherTokenId) == msg.sender, 'Sender must own the token');
         require(ownerOf(_motherTokenId) == msg.sender, 'Sender must own the token');
 
-        (string memory _fatherGene, , , ,) = getSlimeByTokenId(_fatherTokenId);
-        (string memory _motherGene, , , ,) = getSlimeByTokenId(_motherTokenId);
+        (string memory _fatherGene, , , , , ) = getSlimeByTokenId(_fatherTokenId);
+        (string memory _motherGene, , , , , ) = getSlimeByTokenId(_motherTokenId);
 
-        string memory newGene = mixGene(_fatherGene, _motherGene);
-        string memory newType = "None";
-        bytes memory _newGene = bytes(newGene);
-        
+        string memory newGene = "111222333";
+        string memory newType = mixGeneReturnType(_fatherGene, _motherGene);
+        uint256 newHealth = mixGeneReturnHealth(_fatherGene, _motherGene);
+        uint256 newAttack = mixGeneReturnAttack(_fatherGene, _motherGene);
 
-        if(_newGene[2] == "0") {
-            newType = "green";
-        }
-        else if(_newGene[2] == "1") {
-            newType = "pink";
-        }
-        else {
-            newType = "blue";
-        }
+        //mixGene 에서 유전자 뽑기
+        (newGene, newType, newHealth, newAttack) = mixGeneReturnAll(_fatherGene, _motherGene);
 
         uint256 newTokenId = createSlime(
             newGene,
             _fatherTokenId,
             _motherTokenId,
             newType,
-            100,
-            10,
+            newHealth,
+            newAttack,
             msg.sender
         );
-
+        
         // 이벤트 출력
         emit Birth(
             msg.sender,
@@ -109,9 +102,8 @@ contract SlimeBreed is SlimeBase {
             _fatherTokenId,
             _motherTokenId,
             newType,
-            100,
-            10
-        );
+            newHealth,
+            newAttack
+        );     
     }
-
 }
