@@ -232,38 +232,38 @@ contract SlimeCore is SlimeBase {
 
 
     
-    function getTokenIds(address _owner) external view returns (uint256[] memory) {
-        // 소유자의 토큰 소지 갯수
-        uint256 arrLength = ownersTokenIds[_owner].length;
-        uint256[] memory tokens = new uint256[](balanceOf(_owner));
-        uint256 tokenIdx = 0;
+    // function getTokenIds(address _owner) external view returns (uint256[] memory) {
+    //     // 소유자의 토큰 소지 갯수
+    //     uint256 arrLength = ownersTokenIds[_owner].length;
+    //     uint256[] memory tokens = new uint256[](balanceOf(_owner));
+    //     uint256 tokenIdx = 0;
         
-        for (uint256 i = 0; i < arrLength; i++) {
-            uint256 tokenId = ownersTokenIds[_owner][i];
+    //     for (uint256 i = 0; i < arrLength; i++) {
+    //         uint256 tokenId = ownersTokenIds[_owner][i];
 
-            if (int256(ownersTokenIdAtIndex[_owner][tokenId]) != -1) {
-                tokens[tokenIdx] = tokenId;
-                tokenIdx += 1;
-            }
-        }
+    //         if (int256(ownersTokenIdAtIndex[_owner][tokenId]) != -1) {
+    //             tokens[tokenIdx] = tokenId;
+    //             tokenIdx += 1;
+    //         }
+    //     }
 
-        return tokens;
-    }
-    function getTokensOfDeployer() external view returns (uint256[] memory) {
-        require(deployer != address(0x0), 'Deployer must set first');
+    //     return tokens;
+    // }
+    // function getTokensOfDeployer() external view returns (uint256[] memory) {
+    //     require(deployer != address(0x0), 'Deployer must set first');
 
-        uint256 arrLength = ownersTokenIds[deployer].length;
-        uint256[] memory tokens = new uint256[](balanceOf(deployer));
-        uint256 tokenIdx = 0;
+    //     uint256 arrLength = ownersTokenIds[deployer].length;
+    //     uint256[] memory tokens = new uint256[](balanceOf(deployer));
+    //     uint256 tokenIdx = 0;
 
-        for (uint256 i = 0; i < arrLength ; i++) {
-            uint256 tokenId = ownersTokenIds[deployer][i];
+    //     for (uint256 i = 0; i < arrLength ; i++) {
+    //         uint256 tokenId = ownersTokenIds[deployer][i];
 
-            if (ownersTokenIdAtIndex[deployer][tokenId] != -1) {
-                tokens[tokenIdx] = tokenId;
-                tokenIdx += 1;
-            }
-        }
-        return tokens;
-    }
+    //         if (ownersTokenIdAtIndex[deployer][tokenId] != -1) {
+    //             tokens[tokenIdx] = tokenId;
+    //             tokenIdx += 1;
+    //         }
+    //     }
+    //     return tokens;
+    // }
 }
