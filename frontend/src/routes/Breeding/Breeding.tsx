@@ -1,8 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/Breeding/NFTCard';
 import styles from './Breeding.module.css';
 import { ISlimeMetaData, NFT } from '../../common/DataTypes';
 import { SlimeCoreContract } from '../../contracts';
+import { accountContext } from '../../App';
 
 function isEmptyObj(obj: Object): boolean {
   if (obj === undefined) return true;
@@ -12,11 +13,8 @@ function isEmptyObj(obj: Object): boolean {
   return false;
 }
 
-interface BreedingProps {
-  account: string;
-}
-
-const Breeding: FC<BreedingProps> = ({ account }) => {
+const Breeding: FC = () => {
+  const { account } = useContext(accountContext);
   const [clicked, setClicked] = useState<Array<ISlimeMetaData>>([]); // 선택한 카드
   const [slimeCards, setSlimeCards] = useState<ISlimeMetaData[]>([]);
 

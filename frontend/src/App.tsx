@@ -42,11 +42,8 @@ const App: FC = () => {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/Marketplace" element={<Marketplace />} />
-            <Route
-              path="/MyNFTPage"
-              element={<MyNFTPage account={account} />}
-            />
-            <Route path="/Breeding" element={<Breeding account={account} />} />
+            <Route path="/MyNFTPage" element={<MyNFTPage />} />
+            <Route path="/Breeding" element={<Breeding />} />
             <Route path="/Game" element={<Game />} />
           </Routes>
         </accountContext.Provider>
