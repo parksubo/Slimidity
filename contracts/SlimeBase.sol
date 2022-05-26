@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+// remixd -s . --remix-ide https://remix.ethereum.org
+
 pragma solidity ^0.8.0;
 
 // import 'hardhat/console.sol';
@@ -35,7 +37,7 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
     // key: ownerAddress => (key: tokenId => value: tokenIdAtIndex)
     mapping(address => mapping(uint256 => int256)) public ownersTokenIdAtIndex;
     // 특정 슬라임의 유전자를 가지는 슬라임이 몇 개인지 카운트
-    mapping(string => uint256) public slimeCountPerGene;
+    //mapping(string => uint256) public slimeCountPerGene;
 
     constructor() ERC721('Slimes', 'SLME') {
         baseUri = '';
@@ -51,17 +53,7 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
     function getContractBalance() external view returns (uint256) { //onlyDeployer returns (uint256) {
         return address(this).balance;
     }
-    /*
-    // baseURI Get
-    function _baseURI() internal view virtual override returns (string memory) {
-        return baseUri;
-    }
-    // baseURI Set
-    function setBaseUri(string memory _baseUri) external onlyDeployer {
-        baseUri = _baseUri;
-    }
-    */
-    
+
     // 
     function addOwnerShip (address _owner, uint256 tokenId) internal {
         require(_owner != address(0x0), "Owner must a valid address");
@@ -108,7 +100,7 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
         // 생성했으므로 카운터 트래커 인덱스++
         slimeIndexTracker.increment();
         // 해당 유전자를 가진 슬라임 개수++
-        slimeCountPerGene[_genes] += 1;
+        //slimeCountPerGene[_genes] += 1;
 
         return newTokenId;
     }
