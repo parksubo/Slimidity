@@ -74,20 +74,16 @@ contract SlimeCore is SlimeBase {
         uint256 price = slimeTokenPrices[_tokenId];
         address tokenOwner = ownerOf(_tokenId);
         // 가격이 0이하인 경우
-        require(price <= 0, "Token is not on sale");
+        require(price > 0, "Token is not on sale");
         // 구매자가 돈이 충분하지 않은 경우
-        require(msg.value < price, "Caller has not enough money.");
+        require(price <= msg.value, "Caller sent lower than price.");
         // 사려는 사람이 이미 소유자인 경우
-        require(tokenOwner != msg.sender, 'Avoid self purchase');
-        // 토큰이 배포자에게 있을 경우
-        require(tokenOwner == deployer, 'Purchase only from deployer');
+        require(tokenOwner != msg.sender, "Caller is animal token's owner.");
 
-        // 사려는 사람에게 소유권 추가
-        addOwnerShip(msg.sender, _tokenId);
         // 토큰 소유자에게 이더 보내기
         payable(tokenOwner).transfer(msg.value);
-        // 토큰 소유자로부터 소유권 박탈 (-1로 초기화)
-        ownersTokenIdAtIndex[tokenOwner][_tokenId] = -1;
+        // slime 소유권 넘겨주기(tokenOwner -> msg.sender)
+        safeTransferFrom(tokenOwner, msg.sender, _tokenId);
         // 판매 했으므로 가격 초기화
         slimeTokenPrices[_tokenId] = 0;
 
