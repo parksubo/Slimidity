@@ -4,9 +4,16 @@ pragma solidity ^0.8.0;
 //import 'hardhat/console.sol';
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import './SlimeBase.sol';
+import './SlimeBreed.sol';
 
-contract SlimeCore is SlimeBase {
+contract SlimeSale is SlimeBase {
 
+    SlimeBreed public slimeBreedAddress;
+
+    constructor(address _slimeBreedAddress) {
+        slimeBreedAddress = SlimeBreed(_slimeBreedAddress);
+    }
+    
     // 프론트엔드를 위한 슬라임 struct
     struct SlimeMetaData {
         uint256 _id;
@@ -34,12 +41,6 @@ contract SlimeCore is SlimeBase {
         uint256 attack
     );
 
-    constructor() SlimeBase() {
-        // genes, fatherTokenId, motherTokenId, health, attack, owner
-        createSlime('000000000', 0, 0, "green", 100, 10, msg.sender);
-        // 토큰을 배포한 주소를 담는다.
-        // setDeployer(msg.sender);
-    }
 
     // web3 type문제로 인해 주석처리
     // 이더를 받기위한 fallback 함수 (external, payable 필수)
@@ -59,7 +60,7 @@ contract SlimeCore is SlimeBase {
 
         // 조건검사
         require(tokenOwner == msg.sender, "Caller is not slime token owner.");
-        require(price > 0, "Price is zero or lower");
+        require(_price > 0, "Price is zero or lower");
         require(slimeTokenPrices[_tokenId] == 0, "This slime token is already on sale");
         //require(mintSlimeTokenAddress.isApprovedForAll(tokenOwner, address(this)), "Slime token owner did not approve token.");
 
@@ -92,7 +93,7 @@ contract SlimeCore is SlimeBase {
         slimeTokenPrices[_tokenId] = 0;
 
         for (uint256 i = 0; i < onSaleSlimeTokenArray.length; i++) {
-            tokenId = onSaleSlimeTokenArray[i];
+            uint256 tokenId = onSaleSlimeTokenArray[i];
             if(slimeTokenPrices[tokenId] == 0) {
                 onSaleSlimeTokenArray[i] = onSaleSlimeTokenArray[onSaleSlimeTokenArray.length - 1];
                 onSaleSlimeTokenArray.pop();
@@ -108,10 +109,10 @@ contract SlimeCore is SlimeBase {
     // 현재 판매중인 슬라임 목록 리턴하는 함수
     function getSlimeTokensOnSale() view public returns (SlimeMetaData[] memory) {
         uint256 onSaleSlimeTokenLength = onSaleSlimeTokenArray.length;
-        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](onSaleSlimeTokenLength);
 
         for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
-            id = onSaleSlimeTokenArray[i];
+            uint256 id = onSaleSlimeTokenArray[i];
 
             string memory genes = slimes[id].genes;
             uint256 fatherTokenId = slimes[id].fatherTokenId;
@@ -134,26 +135,60 @@ contract SlimeCore is SlimeBase {
         }
         return slimeMetaData;
     }
-
+    /*
     // 프론트에서 슬라임 정보 보기 위한 함수
     function getSlimeByTokenId(uint256 _tokenId) public view returns (
             string memory _genes,
+            string memory _type,
             uint256 _fatherTokenId,
             uint256 _motherTokenId,
             uint256 _health,
             uint256 _attack
-            //uint256 _rarity
         )   {
+ 
         _genes = slimes[_tokenId].genes;
+        _type = slimes[_tokenId].slimeType;
         _fatherTokenId = slimes[_tokenId].fatherTokenId;
         _motherTokenId = slimes[_tokenId].motherTokenId;
         _health = slimes[_tokenId].health;
         _attack = slimes[_tokenId].attack;
-        //_rarity = slimeCountPerGene[slimes[_tokenId].genes];
 
-        return (_genes,_fatherTokenId,_motherTokenId,_health,_attack);
+        return (_genes, _type, _fatherTokenId,_motherTokenId,_health,_attack);
     }
+
+        function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
+        uint256 balanceLength = balanceOf(_slimeTokenOwner);
     
+        require(balanceLength != 0, 'Owner has no Slime token');
+
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
+
+        for (uint256 i = 0; i < balanceLength; i++) {
+            uint256 id = tokenOfOwnerByIndex(_slimeTokenOwner, i); // nft id
+
+            string memory genes = slimes[id].genes;
+            uint256 fatherTokenId = slimes[id].fatherTokenId;
+            uint256 motherTokenId = slimes[id].motherTokenId;
+            string memory slimeType = slimes[id].slimeType; 
+            uint256 health = slimes[id].health;
+            uint256 attack = slimes[id].attack;
+            uint256 price = slimeTokenPrices[id];
+
+            slimeMetaData[i] = SlimeMetaData(
+                id,
+                genes,
+                slimeType,
+                fatherTokenId,
+                motherTokenId,
+                health,
+                attack,
+                price
+            );
+        }
+
+        return slimeMetaData;
+    }
+    */
     // 해당 계정이 가진 모든 슬라임 정보 반환
     function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
         uint256 balanceLength = balanceOf(_slimeTokenOwner);
@@ -174,7 +209,8 @@ contract SlimeCore is SlimeBase {
             uint256 price = slimeTokenPrices[id];
 
             slimeMetaData[i] = SlimeMetaData(
-                id,genes,
+                id,
+                genes,
                 slimeType,
                 fatherTokenId,
                 motherTokenId,
@@ -184,58 +220,9 @@ contract SlimeCore is SlimeBase {
             );
         }
 
-    return slimeMetaData;
+        return slimeMetaData;
     }
-
-    // 슬라임 브리딩하는 함수
-    function breedslimes(uint256 _fatherTokenId, uint256 _motherTokenId) external {
-        require(msg.sender != deployer, 'Disallow deployer to breed');
-        require(ownerOf(_fatherTokenId) == msg.sender, 'Sender must own the token');
-        require(ownerOf(_motherTokenId) == msg.sender, 'Sender must own the token');
-
-        (string memory _fatherGene, , , ,) = getSlimeByTokenId(_fatherTokenId);
-        (string memory _motherGene, , , ,) = getSlimeByTokenId(_motherTokenId);
-
-        string memory newGene = mixGene(_fatherGene, _motherGene);
-        string memory newType = "None";
-        bytes memory _newGene = bytes(newGene);
-        
-
-        if(_newGene[2] == "0") {
-            newType = "green";
-        }
-        else if(_newGene[2] == "1") {
-            newType = "pink";
-        }
-        else {
-            newType = "blue";
-        }
-
-        uint256 newTokenId = createSlime(
-            newGene,
-            _fatherTokenId,
-            _motherTokenId,
-            newType,
-            100,
-            10,
-            msg.sender
-        );
-
-        // 이벤트 출력
-        emit Birth(
-            msg.sender,
-            newTokenId,
-            newGene,
-            _fatherTokenId,
-            _motherTokenId,
-            newType,
-            100,
-            10
-        );
-    }
-
-
-    
+    /*    
     function getTokenIds(address _owner) external view returns (uint256[] memory) {
         // 소유자의 토큰 소지 갯수
         uint256 arrLength = ownersTokenIds[_owner].length;
@@ -253,6 +240,7 @@ contract SlimeCore is SlimeBase {
 
         return tokens;
     }
+
     function getTokensOfDeployer() external view returns (uint256[] memory) {
         require(deployer != address(0x0), 'Deployer must set first');
 
@@ -270,4 +258,5 @@ contract SlimeCore is SlimeBase {
         }
         return tokens;
     }
+    */
 }
