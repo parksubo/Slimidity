@@ -48,8 +48,8 @@ contract SlimeSale is SlimeBase {
         slimeTokenPrices[_tokenId] = 0;
 
         for (uint256 i = 0; i < onSaleSlimeTokenArray.length; i++) {
-            _tokenId = onSaleSlimeTokenArray[i];
-            if(slimeTokenPrices[_tokenId] == 0) {
+            uint256 tokenId = onSaleSlimeTokenArray[i];
+            if(slimeTokenPrices[tokenId] == 0) {
                 onSaleSlimeTokenArray[i] = onSaleSlimeTokenArray[onSaleSlimeTokenArray.length - 1];
                 onSaleSlimeTokenArray.pop();
             }
@@ -111,7 +111,8 @@ contract SlimeSale is SlimeBase {
             uint256 price = slimeTokenPrices[id];
 
             slimeMetaData[i] = SlimeMetaData(
-                id,genes,
+                id,
+                genes,
                 slimeType,
                 fatherTokenId,
                 motherTokenId,
@@ -121,6 +122,6 @@ contract SlimeSale is SlimeBase {
             );
         }
 
-    return slimeMetaData;
+        return slimeMetaData;
     }
 }
