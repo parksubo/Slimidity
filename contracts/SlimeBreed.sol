@@ -7,18 +7,6 @@ import './SlimeBase.sol';
 
 contract SlimeBreed is SlimeBase {
 
-    // 프론트엔드를 위한 슬라임 struct
-    struct SlimeMetaData {
-        uint256 _id;
-        string _genes;
-        string _type;
-        uint256 _fatherTokenId;
-        uint256 _motherTokenId;
-        uint256 _health;
-        uint256 _attack;
-        uint256 _price;
-    }
-
     // 프론트앤드와 소통하기 위한 이벤트
     // 소유자 주소와 토큰Id 받기
     event Received(address, uint256);

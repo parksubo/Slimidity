@@ -7,6 +7,18 @@ import './SlimeBreed.sol';
 
 contract SlimeSale is SlimeBase {
   
+    // 프론트엔드를 위한 슬라임 struct
+    struct SlimeMetaData {
+        uint256 _id;
+        string _genes;
+        string _type;
+        uint256 _fatherTokenId;
+        uint256 _motherTokenId;
+        uint256 _health;
+        uint256 _attack;
+        uint256 _price;
+    }
+
     // SlimeTokenId => price
     mapping(uint256 => uint256) public slimeTokenPrices;
 
