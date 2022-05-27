@@ -43,15 +43,7 @@ contract SlimeBase is ERC721Enumerable {
 
     // key: ownerAddress => value: tokenId
     mapping(address => uint256[]) public ownersTokenIds;
-    // 특정 슬라임의 유전자를 가지는 슬라임이 몇 개인지 카운트
-    // mapping(string => uint256) public slimeCountPerGene;
-    
-    /*
-    // 배포자 설정
-    function setDeployer(address _deployer) internal {
-        deployer = _deployer;
-    }
-    */
+
     // 배포자의 잔액 확인 (external로 다큰 컨트랙트나 트랜잭션을 통해서만 호출)
     function getContractBalance() external view returns (uint256) { //onlyDeployer returns (uint256) {
         return address(this).balance;
@@ -88,22 +80,7 @@ contract SlimeBase is ERC721Enumerable {
         slimes[newTokenId] = _slime;
         // 생성했으므로 카운터 트래커 인덱스++
         slimeIndexTracker.increment();
-        // 해당 유전자를 가진 슬라임 개수++
-        // slimeCountPerGene[_genes] += 1;
 
         return newTokenId;
     }
-
-    // 임시 슬라임 민팅 함수
-    function mintGenesisSlime(string memory _genes, string memory _type) external {// external onlyDeployer {
-        createSlime(_genes, 0, 0, _type, 100, 10, msg.sender);
-    }
-    /*
-    // 배포자만 사용가능하게
-    modifier onlyDeployer() {
-        require(deployer != address(0x0), 'Deployer must set first');
-        require(msg.sender == deployer, 'Must Deployer');
-        _;
-    }
-    */
 }
