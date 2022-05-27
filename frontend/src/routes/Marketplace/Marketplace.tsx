@@ -258,6 +258,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
                 type={nft._type}
                 attack={nft._attack}
                 price={nft._price}
+                setSlimeCardsOnSale={setSlimeCardsOnSale}
               />
             </div>
           ))}

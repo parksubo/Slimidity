@@ -4,7 +4,17 @@ import { NFTCardProps } from '../../common/DataTypes';
 import { SlimeCoreContract, web3 } from '../../contracts';
 import { accountContext } from '../../App';
 
-const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
+interface MarketplaceNFTCardProps extends NFTCardProps {
+  setSlimeCardsOnSale: Function;
+}
+
+const NFTCard: FC<MarketplaceNFTCardProps> = ({
+  id,
+  type,
+  attack,
+  price,
+  setSlimeCardsOnSale,
+}) => {
   const { account } = useContext(accountContext);
   const [isBuyable, setIsBuyable] = useState<boolean>(false);
 
@@ -20,6 +30,24 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
       console.error(error);
     }
   };
+
+  const onClickBuy = async () => {
+    try {
+      if (!account) return;
+
+      const response = await SlimeCoreContract.methods //
+        .purchaseSlimeToken(id)
+        .send({ from: account, value: price });
+
+      if (response.status) {
+        await setSlimeCardsOnSale();
+        await getSlimeTokenOwner();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getSlimeTokenOwner();
   }, []);
@@ -32,7 +60,11 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
         <span>타입: {type}</span>
         <span>공격력: {attack}</span>
       </div>
-      {isBuyable && <button className="btn btn-outline-secondary">Buy</button>}
+      {isBuyable && (
+        <button className="btn btn-outline-secondary" onClick={onClickBuy}>
+          Buy
+        </button>
+      )}
     </div>
   );
 };
