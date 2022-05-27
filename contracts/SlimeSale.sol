@@ -10,7 +10,6 @@ contract SlimeSale {
     constructor (address _slimeBaseAddress) {
         slimeBaseAddress = SlimeBase(_slimeBaseAddress);
     }
-
     // 프론트엔드를 위한 슬라임 struct
     struct SlimeMetaData {
         uint256 _id;
@@ -22,7 +21,7 @@ contract SlimeSale {
         uint256 _attack;
         uint256 _price;
     }
-
+    
     // SlimeTokenId => price
     mapping(uint256 => uint256) public slimeTokenPrices;
 
@@ -99,35 +98,6 @@ contract SlimeSale {
                 price
             );
         }
-        return slimeMetaData;
-    }
-
-    // 해당 계정이 가진 모든 슬라임 정보 반환
-    function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
-        uint256 balanceLength = slimeBaseAddress.balanceOf(_slimeTokenOwner);
-    
-        require(balanceLength != 0, 'Owner has no Slime token');
-
-        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
-
-        for (uint256 i = 0; i < balanceLength; i++) {
-            uint256 id = slimeBaseAddress.tokenOfOwnerByIndex(_slimeTokenOwner, i); // nft id
-
-            (string memory genes, uint256 fatherTokenId, uint256 motherTokenId, string memory slimeType, uint256 health, uint256 attack) = slimeBaseAddress.slimes(id);
-            uint256 price = slimeTokenPrices[id];
-
-            slimeMetaData[i] = SlimeMetaData(
-                id,
-                genes,
-                slimeType,
-                fatherTokenId,
-                motherTokenId,
-                health,
-                attack,
-                price
-            );
-        }
-
         return slimeMetaData;
     }
 }
