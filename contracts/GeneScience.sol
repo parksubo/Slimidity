@@ -180,7 +180,7 @@ contract GeneScience is Constants {
     }
 
     // 항상 왼쪽이 uint value가 더 크게 만들어주는 함수
-    function swapLeftBigger(uint256 a, uint256 b) public pure returns (uint256, uint256) {
+    function swapLeftBigger(uint256 a, uint256 b) internal pure returns (uint256, uint256) {
         uint256 c;
         if(a < b) {
             c = a;
@@ -191,7 +191,7 @@ contract GeneScience is Constants {
     }
 
     // bytes -> uint256
-    function bytesToUint256(bytes memory b) public pure returns (uint256){
+    function bytesToUint256(bytes memory b) internal pure returns (uint256){
         uint256 number = 0;     
         for(uint i=0; i<3; i++){
             number = number + uint8(b[i]) - 48;
