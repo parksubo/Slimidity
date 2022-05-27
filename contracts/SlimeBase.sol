@@ -60,7 +60,7 @@ contract SlimeBase is ERC721Enumerable {
         uint256 _health,
         uint256 _attack,
         address _owner
-    ) internal returns (uint256) {
+    ) public returns (uint256) {
         // 유전자 길이가 9인지 확인
         require(geneScienceAddress.isGeneScience(_genes), 'Genes must be valid');
         // 카운터 트래커에서 현재 tokenId 번호를 가져옴

@@ -9,7 +9,7 @@ contract Constants {
 
 contract GeneScience is Constants {
     // 세가지 요소 합쳐서 리턴: Type + Health + Attack -> newGene
-    function mixGeneReturnAll(string memory _fatherGene, string memory _motherGene) internal view returns (string memory, string memory, uint256, uint256) {
+    function mixGeneReturnAll(string memory _fatherGene, string memory _motherGene) external view returns (string memory, string memory, uint256, uint256) {
         string memory newGene;
         string memory newType;
         uint256 newHealth;
