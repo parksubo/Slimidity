@@ -14,6 +14,12 @@ contract SlimeBase is ERC721Enumerable {
     constructor (address _geneScienceAddress) ERC721('Slimes', 'SLME'){
         geneScienceAddress = GeneScience(_geneScienceAddress);
         baseUri = '';
+
+        // 테스트용 슬라임 생성
+        // genes, fatherTokenId, motherTokenId, health, attack, owner
+        createSlime('000300100', 0, 0, "green", 300, 100, msg.sender);
+        createSlime('001300100', 0, 0, "pink", 300, 100, msg.sender);
+        createSlime('002300100', 0, 0, "blue", 300, 100, msg.sender);
     }
 
     // 슬라임은 유전자, 부모의 토큰 아이디, 체력, 공격력으로 구성
