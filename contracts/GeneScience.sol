@@ -145,7 +145,7 @@ contract GeneScience is Constants {
     }
 
     // bytes로 유전자 정보를 받아 길이가 9인지 확인하는 함수
-    function isGeneScience(string memory _genes) internal pure returns (bool) {
+    function isGeneScience(string memory _genes) public pure returns (bool) {
         bytes memory byteGenes = bytes(_genes);
         return byteGenes.length == GENE_LENGTH;
     }

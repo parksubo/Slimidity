@@ -7,8 +7,14 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import '@openzeppelin/contracts/utils/Counters.sol';
 import './GeneScience.sol';
 
-contract SlimeBase is ERC721Enumerable, GeneScience {
+contract SlimeBase is ERC721Enumerable {
     using Counters for Counters.Counter;
+    GeneScience public geneScienceAddress;
+
+    constructor (address _geneScienceAddress) ERC721('Slimes', 'SLME'){
+        geneScienceAddress = GeneScience(_geneScienceAddress);
+        baseUri = '';
+    }
 
     // 슬라임은 유전자, 부모의 토큰 아이디, 체력, 공격력으로 구성
     struct Slime {
@@ -34,10 +40,6 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
     mapping(address => uint256[]) public ownersTokenIds;
     // 특정 슬라임의 유전자를 가지는 슬라임이 몇 개인지 카운트
     // mapping(string => uint256) public slimeCountPerGene;
-
-    constructor() ERC721('Slimes', 'SLME') {
-        baseUri = '';
-    }
     
     /*
     // 배포자 설정
@@ -61,7 +63,7 @@ contract SlimeBase is ERC721Enumerable, GeneScience {
         address _owner
     ) internal returns (uint256) {
         // 유전자 길이가 9인지 확인
-        require(isGeneScience(_genes), 'Genes must be valid');
+        require(geneScienceAddress.isGeneScience(_genes), 'Genes must be valid');
         // 카운터 트래커에서 현재 tokenId 번호를 가져옴
         uint256 newTokenId = slimeIndexTracker.current();
 
