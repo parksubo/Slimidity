@@ -3,10 +3,14 @@ pragma solidity ^0.8.0;
 
 //import 'hardhat/console.sol';
 import './SlimeBase.sol';
-import './SlimeBreed.sol';
 
-contract SlimeSale is SlimeBase {
-  
+contract SlimeSale {
+    SlimeBase public slimeBaseAddress;
+
+    constructor (address _slimeBaseAddress) {
+        slimeBaseAddress = SlimeBase(_slimeBaseAddress);
+    }
+
     // 프론트엔드를 위한 슬라임 struct
     struct SlimeMetaData {
         uint256 _id;
@@ -27,13 +31,13 @@ contract SlimeSale is SlimeBase {
 
     // 판매 등록
     function setForSaleSlimeToken(uint256 _tokenId, uint256 _price) public {
-        address tokenOwner = ownerOf(_tokenId);
+        address tokenOwner = slimeBaseAddress.ownerOf(_tokenId);
 
         // 조건검사
         require(tokenOwner == msg.sender, "Caller is not slime token owner.");
         require(_price > 0, "Price is zero or lower");
         require(slimeTokenPrices[_tokenId] == 0, "This slime token is already on sale");
-        //require(mintSlimeTokenAddress.isApprovedForAll(tokenOwner, address(this)), "Slime token owner did not approve token.");
+        require(slimeBaseAddress.isApprovedForAll(tokenOwner, address(this)), "Slime token owner did not approve token.");
 
         slimeTokenPrices[_tokenId] = _price;
 
@@ -44,7 +48,7 @@ contract SlimeSale is SlimeBase {
     function purchaseSlimeToken(uint256 _tokenId) external payable {
         // 판매 등록되어 있는 가격 불러오기 
         uint256 price = slimeTokenPrices[_tokenId];
-        address tokenOwner = ownerOf(_tokenId);
+        address tokenOwner = slimeBaseAddress.ownerOf(_tokenId);
         // 가격이 0이하인 경우
         require(price > 0, "Token is not on sale");
         // 구매자가 돈이 충분하지 않은 경우
@@ -55,7 +59,7 @@ contract SlimeSale is SlimeBase {
         // 토큰 소유자에게 이더 보내기
         payable(tokenOwner).transfer(msg.value);
         // slime 소유권 넘겨주기(tokenOwner -> msg.sender)
-        safeTransferFrom(tokenOwner, msg.sender, _tokenId);
+        slimeBaseAddress.safeTransferFrom(tokenOwner, msg.sender, _tokenId);
         // 판매 했으므로 가격 초기화
         slimeTokenPrices[_tokenId] = 0;
 
@@ -81,12 +85,7 @@ contract SlimeSale is SlimeBase {
         for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
             uint256 id = onSaleSlimeTokenArray[i];
 
-            string memory genes = slimes[id].genes;
-            uint256 fatherTokenId = slimes[id].fatherTokenId;
-            uint256 motherTokenId = slimes[id].motherTokenId;
-            string memory slimeType = slimes[i].slimeType; 
-            uint256 health = slimes[id].health;
-            uint256 attack = slimes[id].attack;
+            (string memory genes, uint256 fatherTokenId, uint256 motherTokenId, string memory slimeType, uint256 health, uint256 attack) = slimeBaseAddress.slimes(id);
             uint256 price = slimeTokenPrices[id];
 
             slimeMetaData[i] = SlimeMetaData(
@@ -105,21 +104,16 @@ contract SlimeSale is SlimeBase {
 
     // 해당 계정이 가진 모든 슬라임 정보 반환
     function getSlimeTokensByAccount(address _slimeTokenOwner) view public returns (SlimeMetaData[] memory) {
-        uint256 balanceLength = balanceOf(_slimeTokenOwner);
+        uint256 balanceLength = slimeBaseAddress.balanceOf(_slimeTokenOwner);
     
         require(balanceLength != 0, 'Owner has no Slime token');
 
         SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](balanceLength);
 
         for (uint256 i = 0; i < balanceLength; i++) {
-            uint256 id = tokenOfOwnerByIndex(_slimeTokenOwner, i); // nft id
+            uint256 id = slimeBaseAddress.tokenOfOwnerByIndex(_slimeTokenOwner, i); // nft id
 
-            string memory genes = slimes[id].genes;
-            uint256 fatherTokenId = slimes[id].fatherTokenId;
-            uint256 motherTokenId = slimes[id].motherTokenId;
-            string memory slimeType = slimes[id].slimeType; 
-            uint256 health = slimes[id].health;
-            uint256 attack = slimes[id].attack;
+            (string memory genes, uint256 fatherTokenId, uint256 motherTokenId, string memory slimeType, uint256 health, uint256 attack) = slimeBaseAddress.slimes(id);
             uint256 price = slimeTokenPrices[id];
 
             slimeMetaData[i] = SlimeMetaData(
