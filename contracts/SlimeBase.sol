@@ -28,9 +28,8 @@ contract SlimeBase is ERC721Enumerable {
 
     // 토큰 번호를 메기기 위한 카운터 트래커
     Counters.Counter public slimeIndexTracker;
-    // 슬라임 정보 모아놓는 배열
-    Slime[] public slimes;
-
+    // 슬라임 정보 모아놓는 mapping
+    mapping(uint256 => Slime) public slimes;
     // 배포자 주소
     address public deployer;
     // baseURI
@@ -80,7 +79,7 @@ contract SlimeBase is ERC721Enumerable {
         // 소유자 계정으로 토큰민팅
         _mint(_owner, newTokenId);
         // 슬라임 배열에 생성된 슬라임 추가
-        slimes.push(_slime);
+        slimes[newTokenId] = _slime;
         // 생성했으므로 카운터 트래커 인덱스++
         slimeIndexTracker.increment();
         // 해당 유전자를 가진 슬라임 개수++
