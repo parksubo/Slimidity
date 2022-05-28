@@ -15,7 +15,11 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
 
   const onClickSell = async () => {
     if (!account) return;
-
+    if (!(parseInt(inputPrice) > 0)) {
+      alert('0 이상의 수를 입력해주세요');
+      setInputPrice('');
+      return false;
+    }
     const response = await SlimeSaleContract.methods //
       .setForSaleSlimeToken(id, web3.utils.toWei(inputPrice, 'ether'))
       .send({ from: account });
