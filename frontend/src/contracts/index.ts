@@ -744,6 +744,11 @@ const SlimeBreedAbi: AbiItem[] = [
         name: '_slimeBaseAddress',
         type: 'address',
       },
+      {
+        internalType: 'address',
+        name: '_slimeSaleAddress',
+        type: 'address',
+      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -804,6 +809,24 @@ const SlimeBreedAbi: AbiItem[] = [
     type: 'event',
   },
   {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_fatherTokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_motherTokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'breedslimes',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -821,24 +844,6 @@ const SlimeBreedAbi: AbiItem[] = [
     ],
     name: 'Received',
     type: 'event',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_fatherTokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_motherTokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'breedslimes',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
   },
   {
     inputs: [],
@@ -910,6 +915,19 @@ const SlimeBreedAbi: AbiItem[] = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'slimeSaleAddress',
+    outputs: [
+      {
+        internalType: 'contract SlimeSale',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 const SlimeSaleAbi: AbiItem[] = [
   {
@@ -922,6 +940,19 @@ const SlimeSaleAbi: AbiItem[] = [
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'cancelSaleSlimeToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
@@ -939,6 +970,133 @@ const SlimeSaleAbi: AbiItem[] = [
   {
     inputs: [],
     name: 'getSlimeTokensOnSale',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: '_id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: '_genes',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: '_type',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: '_fatherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_motherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_health',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_attack',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct SlimeSale.SlimeMetaData[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'min',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'max',
+        type: 'uint256',
+      },
+    ],
+    name: 'getSlimeTokensOnSaleByAttackRange',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: '_id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: '_genes',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: '_type',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: '_fatherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_motherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_health',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_attack',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct SlimeSale.SlimeMetaData[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_slimeType',
+        type: 'string',
+      },
+    ],
+    name: 'getSlimeTokensOnSaleByType',
     outputs: [
       {
         components: [
@@ -1076,10 +1234,10 @@ const SlimeSaleAbi: AbiItem[] = [
 ];
 
 // remix에서 polygon mumbai testnet에 배포하여 생기는 컨트랙트 주소 붙여넣기
-const GeneScienceAddress = '0x73baeE82b78D15B0cddBd5Dc9A6846959af96cF9';
-const SlimeBaseAddress = '0xB50f8902d8870243E7230E746930DcfB18Fa2B00';
-const SlimeBreedAddress = '0x5E60eA6fc8c694315fA07baD5D1Ba7CE95e073Ce';
-export const SlimeSaleAddress = '0xa8422846Da1118867bB13F77D498a03c6b7A63a9';
+const GeneScienceAddress = '0x4c69B45F2Fcc0D853EA9Ba8455D3555e8050e49f';
+const SlimeBaseAddress = '0x5eb40A28f271409008FE542270386c0D3167301D';
+const SlimeBreedAddress = '0x49F9C66B6D41BB42Fe4027c33991d481D4888168';
+export const SlimeSaleAddress = '0x3cD8bC1BbeFb7BcE3a659b68b111CFF706c23a1D';
 
 // metamask 연동
 export const web3 = new Web3(window.ethereum);
