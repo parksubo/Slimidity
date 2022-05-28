@@ -114,7 +114,7 @@ const Breeding: FC = () => {
     const tempSlimeCards: ISlimeMetaData[] = [];
 
     tempSlimeCards.push({
-      _id: newSlime.id,
+      _id: newSlime.tokenId,
       _genes: newSlime.genes,
       _type: newSlime.slimeType,
       _fatherTokenId: newSlime.fatherTokenId,
