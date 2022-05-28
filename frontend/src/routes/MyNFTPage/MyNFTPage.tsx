@@ -2,11 +2,12 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/MyNFTPage/NFTCard';
 import styles from './MyNFTPage.module.css';
 import { ISlimeMetaData } from '../../common/DataTypes';
-import { SlimeCoreContract } from '../../contracts';
+import { SlimeCoreAddress, SlimeCoreContract } from '../../contracts';
 import { accountContext } from '../../App';
 
 const MyNFTPage: FC = () => {
   const [slimeCards, setSlimeCards] = useState<ISlimeMetaData[]>([]);
+  const [saleStatus, setSaleStatus] = useState<boolean>(false); // 판매권한
   const { account } = useContext(accountContext);
 
   const getAnimalTokens = async () => {
@@ -39,9 +40,42 @@ const MyNFTPage: FC = () => {
           _price: slime._price,
         });
       });
-      console.log(response);
+
       // setstate
       setSlimeCards(tempSlimeCards);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // account가 SlimeCoreAddress nft 판매권한 주기 / 뺏기
+  const onClickApproveToggle = async () => {
+    try {
+      if (!account) return;
+
+      const response = await SlimeCoreContract.methods
+        .setApprovalForAll(SlimeCoreAddress, !saleStatus)
+        .send({ from: account });
+
+      if (response.status) {
+        setSaleStatus(!saleStatus);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // account가 SlimeCoreAddress nft들의 판매권한을 줬는지 확인
+  const getIsApprovedForAll = async () => {
+    try {
+      const response = await SlimeCoreContract.methods //
+        .isApprovedForAll(account, SlimeCoreAddress)
+        .call();
+
+      // saleAnimalToken이 account가 가진 토큰의 판매권한을 가진경우
+      if (response) {
+        setSaleStatus(response);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -51,6 +85,7 @@ const MyNFTPage: FC = () => {
     if (!account) return;
     console.log(`Account: ${account} connected!`);
 
+    getIsApprovedForAll();
     getAnimalTokens();
 
     return () => {
@@ -62,6 +97,12 @@ const MyNFTPage: FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <span>NFT를 판매하거나 판매취소할 수 있습니다.</span>
+      </div>
+      <div style={{ color: 'white' }}>
+        <span>Sale Status: {saleStatus ? 'true' : 'false'} </span>
+        <button onClick={onClickApproveToggle}>
+          {saleStatus ? 'Cancel' : 'Approve'}
+        </button>
       </div>
       <div className={styles.cards}>
         {slimeCards.map((slimeCard) => (
