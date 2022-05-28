@@ -7,7 +7,7 @@ import { ReactComponent as CaretUp } from '../../icons/caret-up-solid.svg';
 import styles from './Marketplace.module.css';
 import RangeSlider from '../../components/Marketplace/Filter/RangeSlider';
 import { ISlimeMetaData } from '../../common/DataTypes';
-import { SlimeCoreContract } from '../../contracts';
+import { SlimeSaleContract } from '../../contracts';
 
 type Filters = {
   type: boolean;
@@ -159,7 +159,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
 
   const setSlimeCardsOnSale = async () => {
     try {
-      const slimeCardsOnSale: ISlimeMetaData[] = await SlimeCoreContract.methods
+      const slimeCardsOnSale: ISlimeMetaData[] = await SlimeSaleContract.methods
         .getSlimeTokensOnSale()
         .call();
 

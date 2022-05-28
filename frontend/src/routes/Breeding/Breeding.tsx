@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/Breeding/NFTCard';
 import styles from './Breeding.module.css';
 import { ISlimeMetaData, NFT } from '../../common/DataTypes';
-import { SlimeCoreContract } from '../../contracts';
+import { SlimeBaseContract, SlimeBreedContract } from '../../contracts';
 import { accountContext } from '../../App';
 
 function isEmptyObj(obj: Object): boolean {
@@ -23,7 +23,7 @@ const Breeding: FC = () => {
       if (!account) return;
 
       // account가 가진 nft 수
-      const balanceLength: string = await SlimeCoreContract.methods //
+      const balanceLength: string = await SlimeBaseContract.methods //
         .balanceOf(account)
         .call();
 
@@ -32,7 +32,7 @@ const Breeding: FC = () => {
       // 소유한 slime 정보 얻기
       const tempSlimeCards: ISlimeMetaData[] = [];
 
-      const response = await SlimeCoreContract.methods
+      const response = await SlimeBaseContract.methods
         .getSlimeTokensByAccount(account)
         .call();
 
@@ -105,7 +105,7 @@ const Breeding: FC = () => {
     const fatherTokenid = clicked[0]._id;
     const motherTokenid = clicked[1]._id;
 
-    const response = await SlimeCoreContract.methods
+    const response = await SlimeBreedContract.methods
       .breedslimes(fatherTokenid, motherTokenid)
       .send({ from: account });
 

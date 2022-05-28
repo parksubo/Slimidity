@@ -2,7 +2,11 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/MyNFTPage/NFTCard';
 import styles from './MyNFTPage.module.css';
 import { ISlimeMetaData } from '../../common/DataTypes';
-import { SlimeCoreAddress, SlimeCoreContract } from '../../contracts';
+import {
+  SlimeBaseContract,
+  SlimeSaleContract,
+  SlimeSaleAddress,
+} from '../../contracts';
 import { accountContext } from '../../App';
 
 const MyNFTPage: FC = () => {
@@ -15,7 +19,7 @@ const MyNFTPage: FC = () => {
       if (!account) return;
 
       // account가 가진 nft 수
-      const balanceLength: string = await SlimeCoreContract.methods //
+      const balanceLength: string = await SlimeBaseContract.methods //
         .balanceOf(account)
         .call();
 
@@ -24,7 +28,7 @@ const MyNFTPage: FC = () => {
       // 소유한 slime 정보 얻기
       const tempSlimeCards: ISlimeMetaData[] = [];
 
-      const response = await SlimeCoreContract.methods
+      const response = await SlimeBaseContract.methods
         .getSlimeTokensByAccount(account)
         .call();
 
@@ -48,13 +52,13 @@ const MyNFTPage: FC = () => {
     }
   };
 
-  // account가 SlimeCoreAddress nft 판매권한 주기 / 뺏기
+  // account가 SlimeSaleAddress nft 판매권한 주기 / 뺏기
   const onClickApproveToggle = async () => {
     try {
       if (!account) return;
 
-      const response = await SlimeCoreContract.methods
-        .setApprovalForAll(SlimeCoreAddress, !saleStatus)
+      const response = await SlimeBaseContract.methods
+        .setApprovalForAll(SlimeSaleAddress, !saleStatus)
         .send({ from: account });
 
       if (response.status) {
@@ -65,11 +69,11 @@ const MyNFTPage: FC = () => {
     }
   };
 
-  // account가 SlimeCoreAddress nft들의 판매권한을 줬는지 확인
+  // account가 SlimeSaleAddress nft들의 판매권한을 줬는지 확인
   const getIsApprovedForAll = async () => {
     try {
-      const response = await SlimeCoreContract.methods //
-        .isApprovedForAll(account, SlimeCoreAddress)
+      const response = await SlimeBaseContract.methods //
+        .isApprovedForAll(account, SlimeSaleAddress)
         .call();
 
       // saleAnimalToken이 account가 가진 토큰의 판매권한을 가진경우

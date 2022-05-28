@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import styles from './NFTCard.module.css';
 import { NFTCardProps } from '../../common/DataTypes';
-import { SlimeCoreContract, web3 } from '../../contracts';
+import { SlimeBaseContract, SlimeSaleContract, web3 } from '../../contracts';
 import { accountContext } from '../../App';
 
 interface MarketplaceNFTCardProps extends NFTCardProps {
@@ -20,7 +20,7 @@ const NFTCard: FC<MarketplaceNFTCardProps> = ({
 
   const getSlimeTokenOwner = async () => {
     try {
-      const response = await SlimeCoreContract.methods.ownerOf(id).call();
+      const response = await SlimeBaseContract.methods.ownerOf(id).call();
 
       // nft판매자와 계정이 달라야 구매가능
       setIsBuyable(
@@ -35,7 +35,7 @@ const NFTCard: FC<MarketplaceNFTCardProps> = ({
     try {
       if (!account) return;
 
-      const response = await SlimeCoreContract.methods //
+      const response = await SlimeSaleContract.methods //
         .purchaseSlimeToken(id)
         .send({ from: account, value: price });
 

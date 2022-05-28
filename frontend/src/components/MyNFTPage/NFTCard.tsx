@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useContext, useState } from 'react';
 import styles from './NFTCard.module.css';
 import { NFTCardProps } from '../../common/DataTypes';
 import { accountContext } from '../../App';
-import { SlimeCoreContract, web3 } from '../../contracts';
+import { SlimeSaleContract, web3 } from '../../contracts';
 
 const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
   const { account } = useContext(accountContext);
@@ -16,7 +16,7 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
   const onClickSell = async () => {
     if (!account) return;
 
-    const response = await SlimeCoreContract.methods //
+    const response = await SlimeSaleContract.methods //
       .setForSaleSlimeToken(id, web3.utils.toWei(inputPrice, 'ether'))
       .send({ from: account });
 

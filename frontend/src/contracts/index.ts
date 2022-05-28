@@ -2,9 +2,76 @@ import { AbiItem } from 'web3-utils';
 import Web3 from 'web3';
 
 // remix에서 abi복사하여 붙여넣기
-const SlimeCoreAbi: AbiItem[] = [
+
+const GeneScienceAbi: AbiItem[] = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_genes',
+        type: 'string',
+      },
+    ],
+    name: 'isGeneScience',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '_fatherGene',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_motherGene',
+        type: 'string',
+      },
+    ],
+    name: 'mixGeneReturnAll',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+const SlimeBaseAbi: AbiItem[] = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_geneScienceAddress',
+        type: 'address',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -59,6 +126,31 @@ const SlimeCoreAbi: AbiItem[] = [
     type: 'event',
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'Transfer',
+    type: 'event',
+  },
+  {
     inputs: [
       {
         internalType: 'address',
@@ -77,76 +169,35 @@ const SlimeCoreAbi: AbiItem[] = [
     type: 'function',
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
         internalType: 'address',
         name: 'owner',
         type: 'address',
       },
+    ],
+    name: 'balanceOf',
+    outputs: [
       {
-        indexed: false,
         internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'string',
-        name: 'genes',
-        type: 'string',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'fatherTokenId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'motherTokenId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'string',
-        name: 'slimeType',
-        type: 'string',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'health',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'attack',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'Birth',
-    type: 'event',
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    inputs: [
+    inputs: [],
+    name: 'baseUri',
+    outputs: [
       {
-        internalType: 'uint256',
-        name: '_fatherTokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_motherTokenId',
-        type: 'uint256',
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
-    name: 'breedslimes',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -157,47 +208,245 @@ const SlimeCoreAbi: AbiItem[] = [
         type: 'string',
       },
       {
+        internalType: 'uint256',
+        name: '_fatherTokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_motherTokenId',
+        type: 'uint256',
+      },
+      {
         internalType: 'string',
-        name: '_type',
+        name: '_slimeType',
         type: 'string',
       },
+      {
+        internalType: 'uint256',
+        name: '_health',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_attack',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_owner',
+        type: 'address',
+      },
     ],
-    name: 'mintGenesisSlime',
-    outputs: [],
+    name: 'createSlime',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'deployer',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'geneScienceAddress',
+    outputs: [
+      {
+        internalType: 'contract GeneScience',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
       {
         internalType: 'uint256',
-        name: '_tokenId',
+        name: 'tokenId',
         type: 'uint256',
       },
     ],
-    name: 'purchaseSlimeToken',
-    outputs: [],
-    stateMutability: 'payable',
+    name: 'getApproved',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
-    anonymous: false,
+    inputs: [],
+    name: 'getContractBalance',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
-        indexed: false,
+        internalType: 'address',
+        name: '_slimeTokenOwner',
+        type: 'address',
+      },
+    ],
+    name: 'getSlimeTokensByAccount',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: '_id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: '_genes',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: '_type',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: '_fatherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_motherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_health',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_attack',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct SlimeBase.SlimeMetaData[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'name',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'ownerOf',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'address',
         name: '',
         type: 'address',
       },
       {
-        indexed: false,
         internalType: 'uint256',
         name: '',
         type: 'uint256',
       },
     ],
-    name: 'Received',
-    type: 'event',
+    name: 'ownersTokenIds',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
@@ -271,486 +520,14 @@ const SlimeCoreAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: '_tokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_price',
-        type: 'uint256',
+        internalType: 'address',
+        name: '_slimeSaleAddress',
+        type: 'address',
       },
     ],
-    name: 'setForSaleSlimeToken',
+    name: 'setSlimeSaleAddress',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'Transfer',
-    type: 'event',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-    ],
-    name: 'balanceOf',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'baseUri',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'deployer',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'getApproved',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getContractBalance',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getOnSaleSlimeTokenArrayLength',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'getSlimeByTokenId',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '_genes',
-        type: 'string',
-      },
-      {
-        internalType: 'uint256',
-        name: '_fatherTokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_motherTokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_health',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_attack',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_slimeTokenOwner',
-        type: 'address',
-      },
-    ],
-    name: 'getSlimeTokensByAccount',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'uint256',
-            name: '_id',
-            type: 'uint256',
-          },
-          {
-            internalType: 'string',
-            name: '_genes',
-            type: 'string',
-          },
-          {
-            internalType: 'string',
-            name: '_type',
-            type: 'string',
-          },
-          {
-            internalType: 'uint256',
-            name: '_fatherTokenId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_motherTokenId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_health',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_attack',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_price',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct SlimeCore.SlimeMetaData[]',
-        name: '',
-        type: 'tuple[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getSlimeTokensOnSale',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'uint256',
-            name: '_id',
-            type: 'uint256',
-          },
-          {
-            internalType: 'string',
-            name: '_genes',
-            type: 'string',
-          },
-          {
-            internalType: 'string',
-            name: '_type',
-            type: 'string',
-          },
-          {
-            internalType: 'uint256',
-            name: '_fatherTokenId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_motherTokenId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_health',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_attack',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '_price',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct SlimeCore.SlimeMetaData[]',
-        name: '',
-        type: 'tuple[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_owner',
-        type: 'address',
-      },
-    ],
-    name: 'getTokenIds',
-    outputs: [
-      {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getTokensOfDeployer',
-    outputs: [
-      {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'name',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'onSaleSlimeTokenArray',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'ownerOf',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'ownersTokenIdAtIndex',
-    outputs: [
-      {
-        internalType: 'int256',
-        name: '',
-        type: 'int256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'ownersTokenIds',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    name: 'slimeCountPerGene',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -761,6 +538,19 @@ const SlimeCoreAbi: AbiItem[] = [
         internalType: 'uint256',
         name: '_value',
         type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'slimeSaleAddress',
+    outputs: [
+      {
+        internalType: 'contract SlimeSale',
+        name: '',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -804,25 +594,6 @@ const SlimeCoreAbi: AbiItem[] = [
       {
         internalType: 'uint256',
         name: 'attack',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'slimeTokenPrices',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
         type: 'uint256',
       },
     ],
@@ -936,10 +707,44 @@ const SlimeCoreAbi: AbiItem[] = [
     stateMutability: 'view',
     type: 'function',
   },
-];
-const SlimeBaseAbi: AbiItem[] = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
+const SlimeBreedAbi: AbiItem[] = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_geneScienceAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_slimeBaseAddress',
+        type: 'address',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -947,234 +752,100 @@ const SlimeBaseAbi: AbiItem[] = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'address',
         name: 'owner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'approved',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'Approval',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'operator',
         type: 'address',
       },
       {
         indexed: false,
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'genes',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'fatherTokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'motherTokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'slimeType',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'health',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'attack',
+        type: 'uint256',
       },
     ],
-    name: 'ApprovalForAll',
+    name: 'Birth',
     type: 'event',
   },
   {
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'address',
-        name: 'from',
+        name: '',
         type: 'address',
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        indexed: true,
+        indexed: false,
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'Transfer',
+    name: 'Received',
     type: 'event',
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
+        internalType: 'uint256',
+        name: '_fatherTokenId',
+        type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '_motherTokenId',
         type: 'uint256',
       },
     ],
-    name: 'approve',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-    ],
-    name: 'balanceOf',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'baseUri',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'deployer',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'getApproved',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getContractBalance',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: '_genes',
-        type: 'string',
-      },
-    ],
-    name: 'mintGenesisSlime',
+    name: 'breedslimes',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
-    name: 'name',
+    name: 'geneScienceAddress',
     outputs: [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'ownerOf',
-    outputs: [
-      {
-        internalType: 'address',
+        internalType: 'contract GeneScience',
         name: '',
         type: 'address',
       },
@@ -1185,161 +856,12 @@ const SlimeBaseAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
         internalType: 'uint256',
-        name: '',
+        name: '_tokenId',
         type: 'uint256',
       },
     ],
-    name: 'ownersTokenIdAtIndex',
-    outputs: [
-      {
-        internalType: 'int256',
-        name: '',
-        type: 'int256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'ownersTokenIds',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
-      },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    name: 'slimeCountPerGene',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'slimeIndexTracker',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '_value',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'slimes',
+    name: 'getSlimeByTokenId',
     outputs: [
       {
         internalType: 'string',
@@ -1376,247 +898,39 @@ const SlimeBaseAbi: AbiItem[] = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bytes4',
-        name: 'interfaceId',
-        type: 'bytes4',
-      },
-    ],
-    name: 'supportsInterface',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [],
-    name: 'symbol',
+    name: 'slimeBaseAddress',
     outputs: [
       {
-        internalType: 'string',
+        internalType: 'contract SlimeBase',
         name: '',
-        type: 'string',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'tokenURI',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
 ];
-const GeneScienceAbi: AbiItem[] = [
+const SlimeSaleAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'string',
-        name: 'name_',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'symbol_',
-        type: 'string',
+        internalType: 'address',
+        name: '_slimeBaseAddress',
+        type: 'address',
       },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'approved',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'Approval',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
-      },
-    ],
-    name: 'ApprovalForAll',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'Transfer',
-    type: 'event',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'approve',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-    ],
-    name: 'balanceOf',
+    inputs: [],
+    name: 'getOnSaleSlimeTokenArrayLength',
     outputs: [
       {
         internalType: 'uint256',
         name: '',
         type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'getApproved',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
       },
     ],
     stateMutability: 'view',
@@ -1624,12 +938,54 @@ const GeneScienceAbi: AbiItem[] = [
   },
   {
     inputs: [],
-    name: 'name',
+    name: 'getSlimeTokensOnSale',
     outputs: [
       {
-        internalType: 'string',
+        components: [
+          {
+            internalType: 'uint256',
+            name: '_id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'string',
+            name: '_genes',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: '_type',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: '_fatherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_motherTokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_health',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_attack',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: '_price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct SlimeSale.SlimeMetaData[]',
         name: '',
-        type: 'string',
+        type: 'tuple[]',
       },
     ],
     stateMutability: 'view',
@@ -1639,16 +995,16 @@ const GeneScienceAbi: AbiItem[] = [
     inputs: [
       {
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'ownerOf',
+    name: 'onSaleSlimeTokenArray',
     outputs: [
       {
-        internalType: 'address',
+        internalType: 'uint256',
         name: '',
-        type: 'address',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -1657,99 +1013,42 @@ const GeneScienceAbi: AbiItem[] = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '_tokenId',
         type: 'uint256',
       },
     ],
-    name: 'safeTransferFrom',
+    name: 'purchaseSlimeToken',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '_tokenId',
         type: 'uint256',
       },
       {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
+        internalType: 'uint256',
+        name: '_price',
+        type: 'uint256',
       },
     ],
-    name: 'safeTransferFrom',
+    name: 'setForSaleSlimeToken',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
-      },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes4',
-        name: 'interfaceId',
-        type: 'bytes4',
-      },
-    ],
-    name: 'supportsInterface',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
-    name: 'symbol',
+    name: 'slimeBaseAddress',
     outputs: [
       {
-        internalType: 'string',
+        internalType: 'contract SlimeBase',
         name: '',
-        type: 'string',
+        type: 'address',
       },
     ],
     stateMutability: 'view',
@@ -1759,57 +1058,35 @@ const GeneScienceAbi: AbiItem[] = [
     inputs: [
       {
         internalType: 'uint256',
-        name: 'tokenId',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'tokenURI',
+    name: 'slimeTokenPrices',
     outputs: [
       {
-        internalType: 'string',
+        internalType: 'uint256',
         name: '',
-        type: 'string',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
 ];
 
 // remix에서 polygon mumbai testnet에 배포하여 생기는 컨트랙트 주소 붙여넣기
-const SlimeCoreAddress = '0xBF5DC25B4b7C159Fce4528C577ead8678a805B2C';
-const SlimeBaseAddress = '0xc39F61594820364Ee2830eDC77c0E62AffBa287e';
-const GeneScienceAddress = '0x93ae209858d22Ec64aDeFd955d7aE61FC7cfaa39';
+const GeneScienceAddress = '0x73baeE82b78D15B0cddBd5Dc9A6846959af96cF9';
+const SlimeBaseAddress = '0xB50f8902d8870243E7230E746930DcfB18Fa2B00';
+const SlimeBreedAddress = '0x5E60eA6fc8c694315fA07baD5D1Ba7CE95e073Ce';
+export const SlimeSaleAddress = '0xa8422846Da1118867bB13F77D498a03c6b7A63a9';
 
 // metamask 연동
 export const web3 = new Web3(window.ethereum);
 
-export const SlimeCoreContract = new web3.eth.Contract(
-  SlimeCoreAbi,
-  SlimeCoreAddress
+export const GeneScienceContract = new web3.eth.Contract(
+  GeneScienceAbi,
+  GeneScienceAddress
 );
 
 export const SlimeBaseContract = new web3.eth.Contract(
@@ -1817,7 +1094,12 @@ export const SlimeBaseContract = new web3.eth.Contract(
   SlimeBaseAddress
 );
 
-export const GeneScienceContract = new web3.eth.Contract(
-  GeneScienceAbi,
-  GeneScienceAddress
+export const SlimeBreedContract = new web3.eth.Contract(
+  SlimeBreedAbi,
+  SlimeBreedAddress
+);
+
+export const SlimeSaleContract = new web3.eth.Contract(
+  SlimeSaleAbi,
+  SlimeSaleAddress
 );
