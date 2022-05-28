@@ -33,8 +33,8 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         onChange={handleAttackValueChangeSlider}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}
-        min={0}
-        max={20}
+        min={100}
+        max={999}
       />
       <div className={styles.InputbtnContainer}>
         <input

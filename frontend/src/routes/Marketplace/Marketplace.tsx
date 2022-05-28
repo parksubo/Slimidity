@@ -32,7 +32,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
   });
 
   // attack(공격력) filter
-  const [attackValue, setAttackValue] = useState<number[]>([0, 20]);
+  const [attackValue, setAttackValue] = useState<number[]>([100, 999]);
 
   // 정렬
   // 0: highest price 1: lowest price 2: Latest
@@ -75,7 +75,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     e: React.MouseEvent<HTMLButtonElement>
   ): void => {
     const type: string | null = e.currentTarget.getAttribute('data-name');
-
+    console.log(type);
     if (name != null) {
       let sortedNfts: ISlimeMetaData[] = NFTsOnChain.filter(
         (nft) => nft._type === type
@@ -197,14 +197,14 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
           {isTriggerOpen['type'] ? (
             <div className={styles.CollapseContentContainer}>
               <div className={styles.typeFilter}>
-                <button onClick={onClickTypeFilterBtn} data-name="ice">
-                  Ice
+                <button onClick={onClickTypeFilterBtn} data-name="green">
+                  Green
                 </button>
-                <button onClick={onClickTypeFilterBtn} data-name="fire">
-                  Fire
+                <button onClick={onClickTypeFilterBtn} data-name="pink">
+                  Pink
                 </button>
-                <button onClick={onClickTypeFilterBtn} data-name="wind">
-                  Wind
+                <button onClick={onClickTypeFilterBtn} data-name="blue">
+                  Blue
                 </button>
               </div>
             </div>
