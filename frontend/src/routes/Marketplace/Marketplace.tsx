@@ -75,8 +75,8 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     e: React.MouseEvent<HTMLButtonElement>
   ): void => {
     const type: string | null = e.currentTarget.getAttribute('data-name');
-    console.log(type);
-    if (name != null) {
+
+    if (type != null) {
       let sortedNfts: ISlimeMetaData[] = NFTsOnChain.filter(
         (nft) => nft._type === type
       );
@@ -91,9 +91,10 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
     max: number,
     NFTArray: ISlimeMetaData[]
   ): ISlimeMetaData[] => {
-    let sortedNFTs: ISlimeMetaData[] = NFTArray.filter(
-      (nft) => min <= nft._attack && nft._attack <= max
-    );
+    let sortedNFTs: ISlimeMetaData[] = NFTArray.filter((nft) => {
+      return min <= parseInt(nft._health) && parseInt(nft._health) <= max;
+    });
+
     return sortedNFTs;
   };
 
@@ -110,6 +111,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
 
     const [min, max] = changedRange;
     const sortedNFTs = filterNFTsFromRange(min, max, NFTsOnChain);
+
     setNfts(sortedNFTs);
   };
 
@@ -162,7 +164,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
       const slimeCardsOnSale: ISlimeMetaData[] = await SlimeSaleContract.methods
         .getSlimeTokensOnSale()
         .call();
-
+      NFTsOnChain = slimeCardsOnSale;
       setNfts(slimeCardsOnSale);
     } catch (error) {
       console.error(error);
@@ -171,7 +173,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
 
   useEffect(() => {
     setSlimeCardsOnSale();
-  }, [NFTsOnChain]);
+  }, []);
   return (
     <div className={styles.rootContainer}>
       <div className={styles.left}>
