@@ -37,16 +37,17 @@ const Breeding: FC = () => {
         .call();
 
       response.map((slime: ISlimeMetaData) => {
-        tempSlimeCards.push({
-          _id: slime._id,
-          _genes: slime._genes,
-          _type: slime._type,
-          _fatherTokenId: slime._fatherTokenId,
-          _motherTokenId: slime._motherTokenId,
-          _health: slime._health,
-          _attack: slime._attack,
-          _price: slime._price,
-        });
+        slime._price !== '0' &&
+          tempSlimeCards.push({
+            _id: slime._id,
+            _genes: slime._genes,
+            _type: slime._type,
+            _fatherTokenId: slime._fatherTokenId,
+            _motherTokenId: slime._motherTokenId,
+            _health: slime._health,
+            _attack: slime._attack,
+            _price: slime._price,
+          });
       });
       console.log(response);
       // setstate
