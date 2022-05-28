@@ -29,7 +29,21 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
       setSellPrice(web3.utils.toWei(inputPrice, 'ether'));
     }
   };
+  const onClickCancel = async () => {
+    try {
+      if (!account) return;
 
+      const response = await SlimeSaleContract.methods
+        .cancelSaleSlimeToken(id)
+        .send({ from: account });
+      if (response.status) {
+        setSellPrice('0');
+        setInputPrice('0');
+      }
+    } catch (error) {
+      console.error(new Error('판매 취소 에러'));
+    }
+  };
   return (
     <div className={styles.container}>
       <span>id: {id}</span>
@@ -43,7 +57,9 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
         <span>공격력: {attack}</span>
       </div>
       {sellPrice !== '0' ? (
-        <button className={styles.cancelButton}>판매취소</button>
+        <button className={styles.cancelButton} onClick={onClickCancel}>
+          판매취소
+        </button>
       ) : (
         <div className={styles.sellContainer}>
           <div className={styles.inputContainer}>
