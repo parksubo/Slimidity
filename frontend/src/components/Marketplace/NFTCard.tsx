@@ -11,6 +11,7 @@ interface MarketplaceNFTCardProps extends NFTCardProps {
 const NFTCard: FC<MarketplaceNFTCardProps> = ({
   id,
   type,
+  health,
   attack,
   price,
   setSlimeCardsOnSale,
@@ -58,6 +59,7 @@ const NFTCard: FC<MarketplaceNFTCardProps> = ({
       <div className={styles.metadata}>
         <span>가격: {web3.utils.fromWei(price)} ether</span>
         <span>타입: {type}</span>
+        <span>체력: {health}</span>
         <span>공격력: {attack}</span>
       </div>
       {isBuyable && (

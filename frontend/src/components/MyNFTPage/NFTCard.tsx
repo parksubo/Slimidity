@@ -4,7 +4,7 @@ import { NFTCardProps } from '../../common/DataTypes';
 import { accountContext } from '../../App';
 import { SlimeSaleContract, web3 } from '../../contracts';
 
-const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
+const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
   const { account } = useContext(accountContext);
   const [sellPrice, setSellPrice] = useState<string>(price);
   const [inputPrice, setInputPrice] = useState<string>(price);
@@ -35,6 +35,7 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, attack, price }) => {
           <span>{`가격: ${web3.utils.fromWei(sellPrice)} ether`}</span>
         )}
         <span>타입: {type}</span>
+        <span>체력: {health}</span>
         <span>공격력: {attack}</span>
       </div>
       {sellPrice !== '0' ? (

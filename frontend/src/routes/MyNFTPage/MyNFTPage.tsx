@@ -118,6 +118,7 @@ const MyNFTPage: FC = () => {
             <NFTCard
               id={slimeCard._id}
               type={slimeCard._type}
+              health={slimeCard._health}
               attack={slimeCard._attack}
               price={slimeCard._price}
             />

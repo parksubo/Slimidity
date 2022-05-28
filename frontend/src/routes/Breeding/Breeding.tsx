@@ -147,6 +147,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={slimeCard._id}
                 type={slimeCard._type}
+                health={slimeCard._health}
                 attack={slimeCard._attack}
                 price={slimeCard._price}
               />
@@ -170,6 +171,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={clicked[0]._id}
                 type={clicked[0]._type}
+                health={clicked[0]._health}
                 attack={clicked[0]._attack}
                 price={clicked[0]._price}
               />
@@ -190,6 +192,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={clicked[1]._id}
                 type={clicked[1]._type}
+                health={clicked[1]._health}
                 attack={clicked[1]._attack}
                 price={clicked[1]._price}
               />

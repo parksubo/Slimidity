@@ -9,6 +9,7 @@ export type NFT = {
 export interface NFTCardProps {
   id: string;
   type: string;
+  health: number;
   attack: number;
   price: string;
 }

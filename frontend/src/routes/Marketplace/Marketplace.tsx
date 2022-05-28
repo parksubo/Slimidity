@@ -256,6 +256,7 @@ const Marketplace: FC<IMarketpalceProps> = (props) => {
               <NFTCard
                 id={nft._id}
                 type={nft._type}
+                health={nft._health}
                 attack={nft._attack}
                 price={nft._price}
                 setSlimeCardsOnSale={setSlimeCardsOnSale}
