@@ -9,8 +9,8 @@ export type NFT = {
 export interface NFTCardProps {
   id: string;
   type: string;
-  health: number;
-  attack: number;
+  health: string;
+  attack: string;
   price: string;
 }
 
@@ -18,9 +18,9 @@ export interface ISlimeMetaData {
   _id: string;
   _genes: string;
   _type: string;
-  _fatherTokenId: number;
-  _motherTokenId: number;
-  _health: number;
-  _attack: number;
+  _fatherTokenId: string;
+  _motherTokenId: string;
+  _health: string;
+  _attack: string;
   _price: string;
 }
