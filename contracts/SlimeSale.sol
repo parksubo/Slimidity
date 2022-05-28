@@ -71,6 +71,22 @@ contract SlimeSale {
         }
     }
 
+        // 판매 취소
+    function cancelSaleSlimeToken(uint256 _tokenId) public { 
+        require(slimeTokenPrices[_tokenId] > 0, "This slime token is not on sale");
+
+        // 판매 취소 했으므로 가격 초기화
+        slimeTokenPrices[_tokenId] = 0;
+
+        for (uint256 i = 0; i < onSaleSlimeTokenArray.length; i++) {
+            uint256 tokenId = onSaleSlimeTokenArray[i];
+            if(slimeTokenPrices[tokenId] == 0) {
+                onSaleSlimeTokenArray[i] = onSaleSlimeTokenArray[onSaleSlimeTokenArray.length - 1];
+                onSaleSlimeTokenArray.pop();
+            }
+        }
+    }
+
     // 프론트에서 판매중인 슬라임 토큰 갯수 보기 위한 함수
     function getOnSaleSlimeTokenArrayLength() view public returns (uint256) {
         return onSaleSlimeTokenArray.length;
@@ -99,5 +115,67 @@ contract SlimeSale {
             );
         }
         return slimeMetaData;
+    }
+
+    // 타입에 맞게 판매중인 슬라임 목록 리턴
+    function getSlimeTokensOnSaleByType(string memory _slimeType) view public returns (SlimeMetaData[] memory) {
+        uint256 onSaleSlimeTokenLength = onSaleSlimeTokenArray.length;
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](onSaleSlimeTokenLength);
+
+        for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
+            uint256 id = onSaleSlimeTokenArray[i];
+
+            (string memory genes, uint256 fatherTokenId, uint256 motherTokenId, string memory slimeType, uint256 health, uint256 attack) = slimeBaseAddress.slimes(id);
+            uint256 price = slimeTokenPrices[id];
+
+            if (equals(_slimeType, slimeType)) break;
+            slimeMetaData[i] = SlimeMetaData(
+                id,
+                genes,
+                slimeType,
+                fatherTokenId,
+                motherTokenId,
+                health,
+                attack,
+                price
+            );
+        }
+        return slimeMetaData;
+    }
+
+    // 공격력 범위 맞게 판매중인 슬라임 목록 리턴
+    // min <= attack <= max
+    function getSlimeTokensOnSaleByAttackRange(uint256 min, uint256 max) view public returns (SlimeMetaData[] memory) {
+        uint256 onSaleSlimeTokenLength = onSaleSlimeTokenArray.length;
+        SlimeMetaData[] memory slimeMetaData = new SlimeMetaData[](onSaleSlimeTokenLength);
+
+        for(uint256 i = 0; i < onSaleSlimeTokenLength; i++) {
+            uint256 id = onSaleSlimeTokenArray[i];
+
+            (string memory genes, uint256 fatherTokenId, uint256 motherTokenId, string memory slimeType, uint256 health, uint256 attack) = slimeBaseAddress.slimes(id);
+            uint256 price = slimeTokenPrices[id];
+
+            if (attack < min || attack > max) break;
+            slimeMetaData[i] = SlimeMetaData(
+                id,
+                genes,
+                slimeType,
+                fatherTokenId,
+                motherTokenId,
+                health,
+                attack,
+                price
+            );
+        }
+        return slimeMetaData;
+    }
+
+    // string 비교
+    function equals(string memory a, string memory b) internal pure returns (bool) {
+        if(bytes(a).length != bytes(b).length) {
+            return false;
+        } else {
+            return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
+        }
     }
 }
