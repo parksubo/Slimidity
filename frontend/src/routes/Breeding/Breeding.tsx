@@ -37,7 +37,7 @@ const Breeding: FC = () => {
         .call();
 
       response.map((slime: ISlimeMetaData) => {
-        slime._price !== '0' &&
+        slime._price === '0' &&
           tempSlimeCards.push({
             _id: slime._id,
             _genes: slime._genes,
