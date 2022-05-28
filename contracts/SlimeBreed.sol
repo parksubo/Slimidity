@@ -5,14 +5,17 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import './GeneScience.sol';
 import './SlimeBase.sol';
+import './SlimeSale.sol';
 
 contract SlimeBreed {
     GeneScience public geneScienceAddress;
     SlimeBase public slimeBaseAddress;
+    SlimeSale public slimeSaleAddress;
 
-    constructor(address _geneScienceAddress, address _slimeBaseAddress) {
+    constructor(address _geneScienceAddress, address _slimeBaseAddress, address _slimeSaleAddress) {
         geneScienceAddress = GeneScience(_geneScienceAddress);
         slimeBaseAddress = SlimeBase(_slimeBaseAddress);
+        slimeSaleAddress = SlimeSale(_slimeSaleAddress);
     }
 
     // 프론트앤드와 소통하기 위한 이벤트
@@ -56,7 +59,8 @@ contract SlimeBreed {
         //require(msg.sender != deployer, 'Disallow deployer to breed');
         require(slimeBaseAddress.ownerOf(_fatherTokenId) == msg.sender, 'Sender must own the token');
         require(slimeBaseAddress.ownerOf(_motherTokenId) == msg.sender, 'Sender must own the token');
-
+        require(slimeSaleAddress.slimeTokenPrices(_fatherTokenId) == 0, 'Slime on sale now');
+        require(slimeSaleAddress.slimeTokenPrices(_motherTokenId) == 0, 'Slime on sale now');
         (string memory _fatherGene, , , , , ) = slimeBaseAddress.slimes(_fatherTokenId);
         (string memory _motherGene, , , , , ) = slimeBaseAddress.slimes(_motherTokenId);
 

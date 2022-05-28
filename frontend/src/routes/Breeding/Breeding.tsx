@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import NFTCard from '../../components/Breeding/NFTCard';
 import styles from './Breeding.module.css';
 import { ISlimeMetaData, NFT } from '../../common/DataTypes';
-import { SlimeCoreContract } from '../../contracts';
+import { SlimeBaseContract, SlimeBreedContract } from '../../contracts';
 import { accountContext } from '../../App';
 
 function isEmptyObj(obj: Object): boolean {
@@ -23,7 +23,7 @@ const Breeding: FC = () => {
       if (!account) return;
 
       // account가 가진 nft 수
-      const balanceLength: string = await SlimeCoreContract.methods //
+      const balanceLength: string = await SlimeBaseContract.methods //
         .balanceOf(account)
         .call();
 
@@ -32,21 +32,22 @@ const Breeding: FC = () => {
       // 소유한 slime 정보 얻기
       const tempSlimeCards: ISlimeMetaData[] = [];
 
-      const response = await SlimeCoreContract.methods
+      const response = await SlimeBaseContract.methods
         .getSlimeTokensByAccount(account)
         .call();
 
       response.map((slime: ISlimeMetaData) => {
-        tempSlimeCards.push({
-          _id: slime._id,
-          _genes: slime._genes,
-          _type: slime._type,
-          _fatherTokenId: slime._fatherTokenId,
-          _motherTokenId: slime._motherTokenId,
-          _health: slime._health,
-          _attack: slime._attack,
-          _price: slime._price,
-        });
+        slime._price === '0' &&
+          tempSlimeCards.push({
+            _id: slime._id,
+            _genes: slime._genes,
+            _type: slime._type,
+            _fatherTokenId: slime._fatherTokenId,
+            _motherTokenId: slime._motherTokenId,
+            _health: slime._health,
+            _attack: slime._attack,
+            _price: slime._price,
+          });
       });
       console.log(response);
       // setstate
@@ -105,7 +106,7 @@ const Breeding: FC = () => {
     const fatherTokenid = clicked[0]._id;
     const motherTokenid = clicked[1]._id;
 
-    const response = await SlimeCoreContract.methods
+    const response = await SlimeBreedContract.methods
       .breedslimes(fatherTokenid, motherTokenid)
       .send({ from: account });
 
@@ -113,7 +114,7 @@ const Breeding: FC = () => {
     const tempSlimeCards: ISlimeMetaData[] = [];
 
     tempSlimeCards.push({
-      _id: newSlime.id,
+      _id: newSlime.tokenId,
       _genes: newSlime.genes,
       _type: newSlime.slimeType,
       _fatherTokenId: newSlime.fatherTokenId,
@@ -147,6 +148,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={slimeCard._id}
                 type={slimeCard._type}
+                health={slimeCard._health}
                 attack={slimeCard._attack}
                 price={slimeCard._price}
               />
@@ -170,6 +172,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={clicked[0]._id}
                 type={clicked[0]._type}
+                health={clicked[0]._health}
                 attack={clicked[0]._attack}
                 price={clicked[0]._price}
               />
@@ -190,6 +193,7 @@ const Breeding: FC = () => {
               <NFTCard
                 id={clicked[1]._id}
                 type={clicked[1]._type}
+                health={clicked[1]._health}
                 attack={clicked[1]._attack}
                 price={clicked[1]._price}
               />
