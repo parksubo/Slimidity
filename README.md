@@ -97,11 +97,36 @@ netlify (Game deployment web server)
  ┗ 📜setupTests.ts
 ```
 ## 게임 방법 (Game)
-추가 예정
+
+### 1. MetaMask 계정을 통해 ethereum network에서 로그인
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172171345-45c8a0cd-47a5-44d5-bb3d-ecc27322a312.png">
+
+### 2. Go! 버튼으로 게임 시작
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172171711-f5070baa-5862-4c0e-b118-3ef682c76621.png">
+
+### 3. 게임 조작 키
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172171838-31fd982a-5eda-4c28-addd-f9e6e99748aa.png">
+
+#### 이동: 방향키
+
+#### 점프: SpaceBar
+
+#### 공격: Shift
+
+### 4. 리더보드 (Ranking)
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172172780-266493de-6cb3-4543-aff7-77617955479f.png">
+
+#### 플레이어들의 랭킹을 볼 수 있습니다.
+
+### 5. 퀘스트 (Daily Mission)
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172174042-fb318cd7-cc01-46ff-b2f4-8d00e55ce7c7.png">
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172174534-a3a778a4-4dc0-43ea-84ed-4d4e2fbcfee8.png">
+
+#### 각 항목별 조건을 완료하면 보상 토큰(3 STK)를 받을 수 있습니다.
 
 ## 마켓플레이스 이용 방법
 
-### 1. MataMask 계정을 통해 ethereum network에서 로그인
+### 1. MetaMask 계정을 통해 ethereum network에서 로그인
 <img width="1476" alt="image" src="https://user-images.githubusercontent.com/33623078/171035832-037b6e3f-253d-4d0a-8643-cc02e2503a47.png">
 <img width="1475" alt="image" src="https://user-images.githubusercontent.com/33623078/171036309-a19ba204-232a-47ac-87c1-883e4f4dbcdc.png">
 
