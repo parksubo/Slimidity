@@ -122,7 +122,7 @@ netlify (Game deployment web server)
 <img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172174042-fb318cd7-cc01-46ff-b2f4-8d00e55ce7c7.png">
 <img width="1202" alt="image" src="https://user-images.githubusercontent.com/33623078/172174534-a3a778a4-4dc0-43ea-84ed-4d4e2fbcfee8.png">
 
-#### 각 항목별 조건을 완료하면 보상 토큰(3 STK)를 받을 수 있습니다.
+#### 각 항목별 조건을 완료하면 보상 토큰(STK)를 받을 수 있습니다.
 
 ## 마켓플레이스 이용 방법
 
