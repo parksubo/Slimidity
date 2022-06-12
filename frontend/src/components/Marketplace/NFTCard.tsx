@@ -55,7 +55,10 @@ const NFTCard: FC<MarketplaceNFTCardProps> = ({
   return (
     <div className={styles.container}>
       <span>id: {id}</span>
-      <img src={require('../../images/IceSlime.png')} className={styles.img} />
+      <img
+        src={require(`../../images/${type}Slime.png`)}
+        className={styles.img}
+      />
       <div className={styles.metadata}>
         <span>가격: {web3.utils.fromWei(price)} ether</span>
         <span>타입: {type}</span>
