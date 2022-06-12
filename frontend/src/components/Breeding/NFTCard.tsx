@@ -9,7 +9,7 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
       <span>id: {id}</span>
       <div className={styles.nftImage}>
         <img
-          src={require('../../images/IceSlime.png')}
+          src={require(`../../images/${type}Slime.png`)}
           className={styles.img}
         />
       </div>

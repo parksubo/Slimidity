@@ -1234,10 +1234,10 @@ const SlimeSaleAbi: AbiItem[] = [
 ];
 
 // remix에서 polygon mumbai testnet에 배포하여 생기는 컨트랙트 주소 붙여넣기
-const GeneScienceAddress = '0x4c69B45F2Fcc0D853EA9Ba8455D3555e8050e49f';
-const SlimeBaseAddress = '0x5eb40A28f271409008FE542270386c0D3167301D';
-const SlimeBreedAddress = '0x49F9C66B6D41BB42Fe4027c33991d481D4888168';
-export const SlimeSaleAddress = '0x3cD8bC1BbeFb7BcE3a659b68b111CFF706c23a1D';
+const GeneScienceAddress = '0x40751161F7B2E650F10b562F6CfC1b305d867fB9';
+const SlimeBaseAddress = '0xA88a754d3539D39FA898953CFcF61F7ef33cB507';
+const SlimeBreedAddress = '0xD2C1D62E8b55dbE2E9790F9C1359964Ed48D16Ae';
+export const SlimeSaleAddress = '0xb7c139710BC49133E50f6f13115e0E47587F171B';
 
 // metamask 연동
 export const web3 = new Web3(window.ethereum);

@@ -47,7 +47,10 @@ const NFTCard: FC<NFTCardProps> = ({ id, type, health, attack, price }) => {
   return (
     <div className={styles.container}>
       <span>id: {id}</span>
-      <img src={require('../../images/IceSlime.png')} className={styles.img} />
+      <img
+        src={require(`../../images/${type}Slime.png`)}
+        className={styles.img}
+      />
       <div className={styles.metadata}>
         {sellPrice !== '0' && (
           <span>{`가격: ${web3.utils.fromWei(sellPrice)} ether`}</span>
