@@ -157,5 +157,6 @@ netlify (Game deployment web server)
 2. 새로운 슬라임이 만들어진 모습
 <img width="1448" alt="image" src="https://user-images.githubusercontent.com/33623078/171038428-1a6e0481-8e53-416d-b668-8705538391a4.png">
 
-
+### youtube 링크
+https://www.youtube.com/watch?v=QQM2ABM1K6k&t=3s
 
